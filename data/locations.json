@@ -1,0 +1,27 @@
+[
+  {
+    "slug": "scottsdale",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "phone": "(480) 555-0199",
+    "geo": { "lat": 33.4942, "lng": -111.9261 },
+    "meta_title": "#1 Plumber in Scottsdale, AZ | 24/7 Emergency Repair",
+    "hero_image": "https://images.unsplash.com/photo-1585129777188-94600bc7b4b3?auto=format&fit=crop&q=80",
+    "intro_text": "Dealing with hard water damage in Scottsdale? Our local team specializes in water softeners and slab leak detection.",
+    "nearby": [
+      { "name": "Phoenix", "slug": "phoenix" },
+      { "name": "Tempe", "slug": "tempe" }
+    ]
+  },
+  {
+    "slug": "phoenix",
+    "city": "Phoenix",
+    "state": "AZ",
+    "phone": "(602) 555-0199",
+    "geo": { "lat": 33.4484, "lng": -112.074 },
+    "meta_title": "Expert Phoenix Plumbers | Licensed & Insured",
+    "hero_image": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&q=80",
+    "intro_text": "From downtown lofts to suburban homes, we are Phoenix's most trusted pipe repair experts.",
+    "nearby": [{ "name": "Scottsdale", "slug": "scottsdale" }]
+  }
+]
