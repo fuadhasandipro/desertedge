@@ -5,23 +5,48 @@ import {
     Wrench, ShieldCheck, Clock, ArrowRight
 } from 'lucide-react';
 import locations from '@/data/locations.json';
+import { Metadata } from 'next';
 
-// --- 1. DYNAMIC SEO METADATA ---
-export async function generateMetadata({ params }: { params: { city: string } }) {
-    const cityData = locations.find((c) => c.slug === params.city);
+// Define the Props type for Next.js 15+
+type Props = {
+    params: Promise<{ city: string }>
+}
+
+// --- 1. DYNAMIC SEO METADATA (Strict) ---
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    // CRITICAL FIX: Await params
+    const { city } = await params;
+
+    const cityData = locations.find((c) => c.slug === city);
     if (!cityData) return {};
+
+    // SEO: Canonical URL to prevent duplicate content penalties
+    const siteUrl = process.env.NODE_ENV === 'production'
+        ? 'https://desertedgeplumbing.com'
+        : 'http://localhost:3000';
+
+    // In production, the canonical URL should be the subdomain
+    const canonicalUrl = process.env.NODE_ENV === 'production'
+        ? `https://${cityData.slug}.desertedgeplumbing.com`
+        : `${siteUrl}/city-sites/${cityData.slug}`;
 
     return {
         title: cityData.meta_title || `Top Rated Plumber in ${cityData.city}, ${cityData.state}`,
         description: `Need a plumber in ${cityData.city}? We offer 24/7 emergency drain cleaning, leak detection, and water heater repair in ${cityData.city}, ${cityData.state}. Licensed & Insured.`,
+        alternates: {
+            canonical: canonicalUrl,
+        },
     };
 }
 
-export default function CityPage({ params }: { params: { city: string } }) {
-    const data = locations.find((c) => c.slug === params.city);
+export default async function CityPage({ params }: Props) {
+    // CRITICAL FIX: Await params
+    const { city } = await params;
+
+    const data = locations.find((c) => c.slug === city);
     if (!data) return notFound();
 
-    // --- 2. JSON-LD SCHEMA (The Secret Sauce) ---
+    // --- 2. JSON-LD SCHEMA ---
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "PlumbingService",

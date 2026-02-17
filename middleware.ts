@@ -1,52 +1,52 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// middleware.ts
 export function middleware(req: NextRequest) {
-    const url = req.nextUrl;
+    const url = req.nextUrl.clone();
+    const host = req.headers.get('host') || '';
 
-    // Get hostname (e.g., "scottsdale.localhost:3000" or "scottsdale.desertedge.com")
-    const hostname = req.headers.get('host') || '';
+    // Identify if we are on localhost or production root
+    const isLocalhost = host.includes('localhost');
+    const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000';
 
-    // Define the root domain. 
-    // IMPORTANT: If you are testing on localhost, this must be "localhost:3000"
-    // If you are on Vercel/Production, this must be "desertedgeplumbing.com"
-    const currentHost = process.env.NODE_ENV === 'production'
-        ? 'desertedgeplumbing.com'
-        : 'localhost:3000';
+    // Extract subdomain
+    // If local: "berlin.localhost:3000" -> ["berlin", "localhost:3000"]
+    // If prod: "berlin.desertedge.com" -> ["berlin", "desertedge", "com"]
+    const parts = host.split('.');
 
-    // Check if we are on a subdomain
-    // Logic: Hostname includes root domain, but is NOT the root domain itself
-    const isSubdomain =
-        hostname.includes(currentHost) &&
-        hostname !== currentHost &&
-        !hostname.startsWith('www.');
+    // Determine the subdomain
+    let subdomain = '';
+    if (isLocalhost) {
+        // In "berlin.localhost:3000", parts[0] is "berlin"
+        // In "localhost:3000", parts[0] is "localhost:3000"
+        if (parts.length > 1) subdomain = parts[0];
+    } else {
+        if (parts.length > 2) subdomain = parts[0];
+    }
 
-    if (isSubdomain) {
-        // Extract the subdomain (e.g., "scottsdale")
-        // We split by "." and take the first part
-        const subdomain = hostname.split('.')[0];
+    const reserved = ['www', 'app', 'admin', 'localhost'];
 
-        console.log(`>>> Rewriting subdomain: ${subdomain} to /city-sites/${subdomain}${url.pathname}`);
-
-        // Rewrite the URL to the internal folder
-        // The user sees: http://scottsdale.localhost:3000/
-        // Next.js serves: /app/city-sites/scottsdale/page.tsx
+    if (subdomain && !reserved.includes(subdomain)) {
         url.pathname = `/city-sites/${subdomain}${url.pathname}`;
         return NextResponse.rewrite(url);
     }
 
+    // IMPORTANT: If no subdomain, let it proceed to the normal /app/page.tsx
     return NextResponse.next();
 }
 
+
+// Optional: Configure the middleware matcher
 export const config = {
     matcher: [
         /*
-         * Match all request paths except for:
-         * 1. /api routes
-         * 2. /_next (internal nextjs files)
-         * 3. /_static (inside /public)
-         * 4. all root files inside /public (e.g. /favicon.ico)
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
          */
-        "/((?!api/|_next/|_static/|[\\w-]+\\.\\w+).*)",
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
     ],
 };

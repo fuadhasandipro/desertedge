@@ -3,15 +3,19 @@ import locations from '@/data/locations.json';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-export default function CityLayout({
+
+
+export default async function CityLayout({
     children,
     params,
 }: {
     children: React.ReactNode;
     params: { city: string };
 }) {
+
+    const { city } = await params;
     // 1. Find the city data based on the URL slug
-    const cityData = locations.find((loc) => loc.slug === params.city);
+    const cityData = locations.find((loc) => loc.slug === city);
 
     // 2. If city doesn't exist in JSON, return 404 (prevents bad indexing)
     if (!cityData) return notFound();
