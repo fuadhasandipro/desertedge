@@ -22,6 +22,140 @@
     "meta_title": "Expert Phoenix Plumbers | Licensed & Insured",
     "hero_image": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&q=80",
     "intro_text": "From downtown lofts to suburban homes, we are Phoenix's most trusted pipe repair experts.",
-    "nearby": [{ "name": "Scottsdale", "slug": "scottsdale" }]
+    "nearby": [
+      { "name": "Scottsdale", "slug": "scottsdale" },
+      { "name": "Glendale", "slug": "glendale" }
+    ]
+  },
+  {
+    "slug": "mesa",
+    "city": "Mesa",
+    "state": "AZ",
+    "phone": "(480) 555-0123",
+    "geo": { "lat": 33.4152, "lng": -111.8315 },
+    "meta_title": "Mesa Plumbing Services | Residential & Commercial",
+    "hero_image": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80",
+    "intro_text": "Serving Mesa homeowners with reliable plumbing repairs, from water heater installations to emergency leak fixes.",
+    "nearby": [
+      { "name": "Gilbert", "slug": "gilbert" },
+      { "name": "Chandler", "slug": "chandler" }
+    ]
+  },
+  {
+    "slug": "chandler",
+    "city": "Chandler",
+    "state": "AZ",
+    "phone": "(480) 555-0124",
+    "geo": { "lat": 33.3062, "lng": -111.8413 },
+    "meta_title": "Top Rated Plumber in Chandler, AZ",
+    "hero_image": "https://images.unsplash.com/photo-1584622050111-993a426fbf0a?auto=format&fit=crop&q=80",
+    "intro_text": "Your go-to local plumber in Chandler for fast drain cleaning and professional plumbing maintenance.",
+    "nearby": [
+      { "name": "Mesa", "slug": "mesa" },
+      { "name": "Gilbert", "slug": "gilbert" }
+    ]
+  },
+  {
+    "slug": "gilbert",
+    "city": "Gilbert",
+    "state": "AZ",
+    "phone": "(480) 555-0125",
+    "geo": { "lat": 33.3528, "lng": -111.789 },
+    "meta_title": "Gilbert's Trusted Emergency Plumbers",
+    "hero_image": "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&q=80",
+    "intro_text": "We provide Gilbert residents with top-tier plumbing services, ensuring your home systems run smoothly year-round.",
+    "nearby": [
+      { "name": "Chandler", "slug": "chandler" },
+      { "name": "Mesa", "slug": "mesa" }
+    ]
+  },
+  {
+    "slug": "los-angeles",
+    "city": "Los Angeles",
+    "state": "CA",
+    "phone": "(213) 555-0100",
+    "geo": { "lat": 34.0522, "lng": -118.2437 },
+    "meta_title": "Los Angeles Plumbing Experts | 24/7 Service",
+    "hero_image": "https://images.unsplash.com/photo-1605276378624-98b487b9903f?auto=format&fit=crop&q=80",
+    "intro_text": "Serving the greater LA area with rapid response times for plumbing emergencies and routine maintenance.",
+    "nearby": [
+      { "name": "San Diego", "slug": "san-diego" },
+      { "name": "San Francisco", "slug": "san-francisco" }
+    ]
+  },
+  {
+    "slug": "san-diego",
+    "city": "San Diego",
+    "state": "CA",
+    "phone": "(619) 555-0101",
+    "geo": { "lat": 32.7157, "lng": -117.1611 },
+    "meta_title": "San Diego's Premier Plumbing Company",
+    "hero_image": "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&q=80",
+    "intro_text": "From coastal homes to downtown condos, we offer comprehensive plumbing solutions across San Diego.",
+    "nearby": [{ "name": "Los Angeles", "slug": "los-angeles" }]
+  },
+  {
+    "slug": "san-francisco",
+    "city": "San Francisco",
+    "state": "CA",
+    "phone": "(415) 555-0102",
+    "geo": { "lat": 37.7749, "lng": -122.4194 },
+    "meta_title": "Licensed Plumbers in San Francisco, CA",
+    "hero_image": "https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?auto=format&fit=crop&q=80",
+    "intro_text": "Expert plumbing for SF's historic homes and modern buildings. Seismic valve installation and sewer repair specialists.",
+    "nearby": [{ "name": "Los Angeles", "slug": "los-angeles" }]
+  },
+  {
+    "slug": "dallas",
+    "city": "Dallas",
+    "state": "TX",
+    "phone": "(214) 555-0150",
+    "geo": { "lat": 32.7767, "lng": -96.797 },
+    "meta_title": "Dallas Plumbing Pros | Fast & Reliable",
+    "hero_image": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80",
+    "intro_text": "Big or small, we fix it all. Your trusted partners for plumbing repair and installation in Dallas.",
+    "nearby": [
+      { "name": "Houston", "slug": "houston" },
+      { "name": "Austin", "slug": "austin" }
+    ]
+  },
+  {
+    "slug": "houston",
+    "city": "Houston",
+    "state": "TX",
+    "phone": "(713) 555-0151",
+    "geo": { "lat": 29.7604, "lng": -95.3698 },
+    "meta_title": "#1 Rated Plumbing Service in Houston, TX",
+    "hero_image": "https://images.unsplash.com/photo-1574359653751-f2a53f6377dc?auto=format&fit=crop&q=80",
+    "intro_text": "Specializing in hurricane-prep plumbing checks and whole-home repiping for Houston residents.",
+    "nearby": [
+      { "name": "Dallas", "slug": "dallas" },
+      { "name": "Austin", "slug": "austin" }
+    ]
+  },
+  {
+    "slug": "austin",
+    "city": "Austin",
+    "state": "TX",
+    "phone": "(512) 555-0152",
+    "geo": { "lat": 30.2672, "lng": -97.7431 },
+    "meta_title": "Austin's Favorite Local Plumbers",
+    "hero_image": "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?auto=format&fit=crop&q=80",
+    "intro_text": "Keeping Austin weird and its pipes clean. Eco-friendly plumbing solutions for the modern home.",
+    "nearby": [
+      { "name": "Dallas", "slug": "dallas" },
+      { "name": "Houston", "slug": "houston" }
+    ]
+  },
+  {
+    "slug": "las-vegas",
+    "city": "Las Vegas",
+    "state": "NV",
+    "phone": "(702) 555-0190",
+    "geo": { "lat": 36.1699, "lng": -115.1398 },
+    "meta_title": "24/7 Plumber Las Vegas | Emergency Repair",
+    "hero_image": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&q=80",
+    "intro_text": "Don't gamble with your plumbing. Licensed professionals serving the entire Las Vegas valley.",
+    "nearby": []
   }
 ]

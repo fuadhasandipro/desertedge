@@ -1,33 +1,25 @@
-import { notFound } from 'next/navigation';
-import locations from '@/data/locations.json';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-
-
+// Use params to get city name if you want to pass it to header
 export default async function CityLayout({
     children,
-    params,
+    params
 }: {
     children: React.ReactNode;
-    params: { city: string };
+    params: { city: string }
 }) {
+    // formatting city name from slug (e.g. "new-york" -> "New York")
 
-    const { city } = await params;
-    // 1. Find the city data based on the URL slug
-    const cityData = locations.find((loc) => loc.slug === city);
+    const { city } = await params
 
-    // 2. If city doesn't exist in JSON, return 404 (prevents bad indexing)
-    if (!cityData) return notFound();
+    const cityName = city.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
-            {/* Pass city-specific phone and name to Header */}
-            <Header city={cityData.city} phone={cityData.phone} />
-
-            <main>{children}</main>
-
-            {/* Footer links back to main domain for SEO silo strength */}
+        <div className="flex min-h-screen flex-col font-sans">
+            {/* Pass city name for "Serving [City]" and hide locations menu */}
+            <Header showLocations={false} city={cityName} />
+            <main className="flex-1">{children}</main>
             <Footer />
         </div>
     );

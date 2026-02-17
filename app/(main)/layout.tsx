@@ -1,18 +1,16 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-export default function MainSiteLayout({
+export default function MainLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <>
-            <Header />  {/* Main Site Header */}
-            <main className="min-h-screen">
-                {children}
-            </main>
-            <Footer />  {/* Main Site Footer */}
-        </>
+        <div className="flex min-h-screen flex-col font-sans">
+            <Header showLocations={true} />
+            <main className="flex-1">{children}</main>
+            <Footer />
+        </div>
     );
 }

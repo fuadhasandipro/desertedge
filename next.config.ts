@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      }, {
+        protocol: 'https',
+        hostname: 'www.gdprofessionalplumbing.com',
+      }, {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
       },
     ],
   },
