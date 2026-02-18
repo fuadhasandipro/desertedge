@@ -1,26 +1,45 @@
+// app/city-sites/[city]/layout.tsx
+import { notFound } from 'next/navigation';
+import { getCityBySlug, generateLocalBusinessSchema } from '@/lib/city-data';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Footer from '@/components/Footer'; // Assuming you have a Footer component
 
-// Use params to get city name if you want to pass it to header
 export default async function CityLayout({
     children,
-    params
+    params,
 }: {
     children: React.ReactNode;
-    params: { city: string }
+    params: Promise<{ city: string }>;
 }) {
-    // formatting city name from slug (e.g. "new-york" -> "New York")
+    const { city } = await params;
+    const cityData = getCityBySlug(city);
 
-    const { city } = await params
+    if (!cityData) return notFound();
 
-    const cityName = city.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    // Generate Schema once for the whole layout
+    const jsonLd = generateLocalBusinessSchema(cityData);
 
     return (
-        <div className="flex min-h-screen flex-col font-sans">
-            {/* Pass city name for "Serving [City]" and hide locations menu */}
-            <Header showLocations={false} city={cityName} />
-            <main className="flex-1">{children}</main>
-            <Footer />
+        <div className="flex flex-col min-h-screen">
+            {/* Inject Schema Globally for this City */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+
+            {/* Localized Header */}
+            <Header
+                city={cityData.city}
+                phone={cityData.phone}
+                showLocations={false} // Hide "Locations" link on local sites to keep them in the silo
+            />
+
+            <main className="flex-grow">
+                {children}
+            </main>
+
+            {/* Localized Footer (We will pass city props to footer later) */}
+            <Footer cityData={cityData} />
         </div>
     );
 }

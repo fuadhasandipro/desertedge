@@ -1,246 +1,199 @@
+// app/city-sites/[city]/page.tsx
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
-import {
-    CheckCircle, MapPin, Phone, Star,
-    Wrench, ShieldCheck, Clock, ArrowRight
-} from 'lucide-react';
-import locations from '@/data/locations.json';
-import { Metadata } from 'next';
+import { CheckCircle2, Star, ShieldCheck, Clock, MapPin, Phone } from 'lucide-react';
+import { getCityBySlug } from '@/lib/city-data';
+import SectionHeading from '@/components/shared/SectionHeading';
+import GlowingButton from '@/components/shared/GlowingButton';
+import ServiceCard from '@/components/shared/ServiceCard';
+import SiloMesh from '@/components/shared/SiloMesh';
+import { services } from '@/data/servicesData'; // Assuming you have a central services list
 
-// Define the Props type for Next.js 15+
-type Props = {
-    params: Promise<{ city: string }>
-}
-
-// --- 1. DYNAMIC SEO METADATA (Strict) ---
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    // CRITICAL FIX: Await params
+export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
+    const data = getCityBySlug(city);
 
-    const cityData = locations.find((c) => c.slug === city);
-    if (!cityData) return {};
-
-    // SEO: Canonical URL to prevent duplicate content penalties
-    const siteUrl = process.env.NODE_ENV === 'production'
-        ? 'https://desertedgeplumbing.com'
-        : 'http://localhost:3000';
-
-    // In production, the canonical URL should be the subdomain
-    const canonicalUrl = process.env.NODE_ENV === 'production'
-        ? `https://${cityData.slug}.desertedgeplumbing.com`
-        : `${siteUrl}/city-sites/${cityData.slug}`;
-
-    return {
-        title: cityData.meta_title || `Top Rated Plumber in ${cityData.city}, ${cityData.state}`,
-        description: `Need a plumber in ${cityData.city}? We offer 24/7 emergency drain cleaning, leak detection, and water heater repair in ${cityData.city}, ${cityData.state}. Licensed & Insured.`,
-        alternates: {
-            canonical: canonicalUrl,
-        },
-    };
-}
-
-export default async function CityPage({ params }: Props) {
-    // CRITICAL FIX: Await params
-    const { city } = await params;
-
-    const data = locations.find((c) => c.slug === city);
     if (!data) return notFound();
 
-    // --- 2. JSON-LD SCHEMA ---
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "PlumbingService",
-        "name": `DesertEdge Plumbing ${data.city}`,
-        "image": data.hero_image,
-        "telephone": data.phone,
-        "priceRange": "$$",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": data.city,
-            "addressRegion": data.state,
-            "addressCountry": "US"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": data.geo.lat,
-            "longitude": data.geo.lng
-        },
-        "areaServed": {
-            "@type": "City",
-            "name": data.city
-        }
-    };
-
     return (
-        <>
-            {/* Inject Schema */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
+        <div className="flex flex-col font-sans">
 
-            {/* --- HERO SECTION --- */}
-            <section className="relative bg-slate-900 text-white py-24 overflow-hidden">
-                <div className="absolute inset-0 opacity-30">
-                    <img src={data.hero_image} alt={`Plumber in ${data.city}`} className="w-full h-full object-cover" />
+            {/* 1. HERO SECTION: Localized & High Impact */}
+            <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={data.hero_image}
+                        alt={`Emergency Plumber in ${data.city}`}
+                        fill
+                        className="object-cover opacity-40"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-transparent to-slate-900/90" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-transparent"></div>
 
-                <div className="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center gap-12">
-                    <div className="md:w-3/5 space-y-6">
-                        <div className="inline-flex items-center gap-2 bg-brand-500/20 border border-brand-500/50 rounded-full px-4 py-1.5 text-brand-300 font-semibold text-sm uppercase tracking-wider">
-                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                            Serving {data.city} & Surrounding Areas
-                        </div>
-
-                        <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                            Reliable Plumbing in <span className="text-brand-400">{data.city}</span>
-                        </h1>
-
-                        <p className="text-xl text-slate-300 max-w-xl">
-                            {data.intro_text || `Professional plumbing repair, installation, and maintenance for homeowners in ${data.city}. 24/7 Emergency service available.`}
-                        </p>
-
-                        <div className="flex flex-wrap gap-4 pt-4">
-                            <a href={`tel:${data.phone.replace(/\D/g, '')}`} className="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-glow hover:scale-105 transition-all flex items-center gap-2">
-                                <Phone className="w-5 h-5" /> Call {data.phone}
-                            </a>
-                            <Link href="/contact" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg backdrop-blur-sm transition-all flex items-center gap-2">
-                                Book Online <ArrowRight className="w-5 h-5" />
-                            </Link>
-                        </div>
+                <div className="container mx-auto px-4 relative z-10 text-center">
+                    <div className="inline-flex items-center gap-2 bg-brand-600/30 backdrop-blur-md border border-brand-500/50 rounded-full px-5 py-2 text-brand-100 font-bold text-sm uppercase tracking-widest mb-8 animate-fade-in-up">
+                        <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                        Now Active in {data.city}, {data.state}
                     </div>
 
-                    {/* Trust Badge Card (Floating) */}
-                    <div className="md:w-2/5 w-full">
-                        <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl shadow-2xl">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="bg-green-500 p-3 rounded-full text-white">
-                                    <ShieldCheck className="w-8 h-8" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold">Guaranteed Service</h3>
-                                    <p className="text-slate-400 text-sm">Licensed in {data.state}</p>
-                                </div>
-                            </div>
-                            <ul className="space-y-4 text-slate-300">
-                                <li className="flex gap-3"><CheckCircle className="text-brand-400 w-5 h-5" /> 60-Minute Response Time</li>
-                                <li className="flex gap-3"><CheckCircle className="text-brand-400 w-5 h-5" /> Upfront, Flat-Rate Pricing</li>
-                                <li className="flex gap-3"><CheckCircle className="text-brand-400 w-5 h-5" /> 100% Satisfaction Guarantee</li>
-                            </ul>
-                        </div>
+                    <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-tight drop-shadow-2xl">
+                        The Plumbers <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-white">{data.city}</span> Trusts
+                    </h1>
+
+                    <p className="text-xl md:text-2xl text-slate-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+                        {data.intro_text || `Fast, reliable, and licensed plumbing services specifically for ${data.city} homeowners. We arrive in minutes, not hours.`}
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                        <GlowingButton
+                            href={`tel:${data.phone.replace(/\D/g, '')}`}
+                            text={`Call ${data.phone}`}
+                            icon="phone"
+                        />
+                        <GlowingButton
+                            href="/services"
+                            text="View Local Services"
+                            variant="outline"
+                            icon="arrow"
+                        />
+                    </div>
+
+                    {/* Local Trust Badge */}
+                    <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm font-semibold text-slate-300">
+                        <div className="flex items-center gap-2"><ShieldCheck className="text-green-400" /> Licensed in {data.state}</div>
+                        <div className="flex items-center gap-2"><Star className="text-yellow-400" /> Top Rated in {data.city}</div>
+                        <div className="flex items-center gap-2"><Clock className="text-blue-400" /> 24/7 Emergency Dispatch</div>
                     </div>
                 </div>
             </section>
 
-            {/* --- SERVICES GRID (Localized) --- */}
-            <section className="py-20 bg-white">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-brand-600 font-bold uppercase tracking-wider text-sm mb-2">Our Services</h2>
-                        <h3 className="text-4xl font-bold text-slate-900">Expert Solutions for {data.city}</h3>
-                    </div>
+            {/* 2. STATS / TRUST BAR */}
+            <section className="py-12 bg-white border-b border-slate-100">
+                <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    {[
+                        { label: "Years in Business", val: "20+" },
+                        { label: "Local Projects", val: "5k+" },
+                        { label: "Satisfaction", val: "100%" },
+                        { label: "Response Time", val: "< 60m" },
+                    ].map((stat, i) => (
+                        <div key={i}>
+                            <div className="text-4xl font-extrabold text-brand-600 mb-1">{stat.val}</div>
+                            <div className="text-slate-500 font-medium uppercase text-xs tracking-wider">{stat.label}</div>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            { title: "Emergency Repairs", icon: Clock, desc: "Burst pipes, sewer backups, and gas leaks handled 24/7." },
-                            { title: "Drain Cleaning", icon: Wrench, desc: "Hydro-jetting and rooter service to clear stubborn clogs." },
-                            { title: "Water Heaters", icon: Star, desc: "Repair and installation of tankless and standard units." }
-                        ].map((service, idx) => (
-                            <div key={idx} className="group bg-slate-50 p-8 rounded-2xl hover:bg-white hover:shadow-xl border border-slate-100 transition-all duration-300">
-                                <div className="w-12 h-12 bg-brand-100 text-brand-600 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                                    <service.icon className="w-6 h-6" />
-                                </div>
-                                <h4 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h4>
-                                <p className="text-slate-600 mb-4">{service.desc}</p>
-                                <Link href={`/services`} className="text-brand-600 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                                    See Details <ArrowRight className="w-4 h-4" />
-                                </Link>
-                            </div>
+            {/* 3. LOCAL SERVICES GRID */}
+            <section className="py-24 bg-slate-50">
+                <div className="container mx-auto px-4">
+                    <SectionHeading
+                        subtitle="Our Expertise"
+                        title={`Complete Plumbing Solutions for ${data.city}`}
+                        description={`From historic homes in downtown ${data.city} to new constructions in the suburbs, we have the specific experience to handle your plumbing needs.`}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* We map specific services relevant to the city - limiting to 6 for the home page */}
+                        {services.slice(0, 6).map((service, i) => (
+                            <ServiceCard
+                                key={i}
+                                title={service.title}
+                                description={service.shortDescription} // Use a short localized description if available
+                                image={service.image}
+                                href={`/services/${service.slug}`} // Links to the SILO page
+                            />
                         ))}
                     </div>
+
+                    <div className="mt-16 text-center">
+                        <Link href="/services" className="text-brand-600 font-bold hover:underline underline-offset-4 text-lg">
+                            View All {data.city} Services &rarr;
+                        </Link>
+                    </div>
                 </div>
             </section>
 
-            {/* --- LOCAL CONTENT BLOCK (AI Generated) --- */}
-            <section className="py-20 bg-slate-50 border-t border-slate-200">
+            {/* 4. EMERGENCY BANNER (The "Hook") */}
+            <section className="py-20 bg-accent-600 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+                <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
+                    <div className="text-white text-center lg:text-left">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Plumbing Disaster in {data.city}?</h2>
+                        <p className="text-accent-100 text-xl max-w-xl">
+                            Don't let water damage destroy your home. We have trucks patrolling {data.city} right now.
+                        </p>
+                    </div>
+                    <div className="flex flex-col gap-4 w-full sm:w-auto">
+                        <GlowingButton
+                            href={`tel:${data.phone.replace(/\D/g, '')}`}
+                            text="Get Emergency Help"
+                            variant="primary"
+                            className="bg-white text-accent-700 hover:bg-slate-100 shadow-none"
+                        />
+                        <p className="text-white/80 text-sm text-center font-medium">Average arrival time: 45 mins</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* 5. LOCAL SEO CONTENT & MESH (The "Silo" Engine) */}
+            <section className="py-24 bg-white">
                 <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-16">
+                    {/* Left: AI-Generated Local Context */}
+                    <div className="lg:w-2/3 prose prose-lg prose-slate">
+                        <h3>Why {data.city} Homeowners Choose DesertEdge</h3>
+                        <p>
+                            Finding a reliable plumber in <strong>{data.city}, {data.state}</strong> shouldn't be a gamble.
+                            Unlike national franchises that treat you like a number, DesertEdge is deeply rooted in the local community.
+                        </p>
+                        <p>
+                            We understand the unique plumbing challenges here—whether it's the hard water affecting water heaters in
+                            {data.city}'s older neighborhoods or the specific sewer line issues caused by local tree species.
+                        </p>
 
-                    <div className="lg:w-2/3">
-                        <h3 className="text-3xl font-bold text-slate-900 mb-6">Why {data.city} Homeowners Trust Us</h3>
-                        <div className="prose prose-lg text-slate-600">
-                            {/* This content comes from your JSON/AI */}
-                            <p className="mb-4">
-                                {data.intro_text}
-                                We understand that plumbing issues in <strong>{data.city}</strong> can be unique due to the local climate and infrastructure.
-                                Whether it's hard water mineral buildup common in {data.state} or older pipe systems in historic neighborhoods,
-                                our team has the specific tools and experience to handle it.
-                            </p>
-                            <p>
-                                Don't let a small leak turn into a major disaster. We are stationed locally, meaning we can get to your home in
-                                minutes, not hours.
+                        <div className="my-8 p-6 bg-blue-50 border-l-4 border-brand-500 rounded-r-xl">
+                            <h4 className="text-brand-800 font-bold m-0">Our {data.city} Promise</h4>
+                            <p className="m-0 text-brand-700">
+                                If we don't fix your issue right the first time, we come back and fix it for free. No questions asked.
                             </p>
                         </div>
 
-                        <div className="mt-8 p-6 bg-brand-50 border border-brand-100 rounded-xl flex items-start gap-4">
-                            <div className="bg-brand-500 text-white p-2 rounded-full mt-1">
-                                <Star className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-900 text-lg">Local Pro Tip</h4>
-                                <p className="text-slate-600">
-                                    Did you know {data.city} water pressure can fluctuate? We recommend installing a pressure regulator to protect your appliances.
-                                </p>
-                            </div>
-                        </div>
+                        <h3>Serving All Neighborhoods in {data.city}</h3>
+                        <p>
+                            Our service vehicles are fully stocked mobile warehouses, meaning we can finish most jobs in a single visit.
+                            We are frequently in the area and ready to serve.
+                        </p>
                     </div>
 
-                    {/* --- NEARBY CITIES (The Silo Mesh) --- */}
+                    {/* Right: The Silo Mesh Component */}
                     <div className="lg:w-1/3">
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
-                            <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                <MapPin className="w-5 h-5 text-brand-500" /> Nearby Service Areas
-                            </h4>
-                            <p className="text-sm text-slate-500 mb-4">We also have trucks available in:</p>
-
-                            <ul className="space-y-3">
-                                {data.nearby?.map((nearbyCity: any) => (
-                                    <li key={nearbyCity.slug}>
-                                        <a
-                                            href={`http://${nearbyCity.slug}.localhost:3000`} // Change to production domain
-                                            className="block p-3 rounded-lg bg-slate-50 hover:bg-brand-50 hover:text-brand-700 transition-colors text-slate-700 font-medium text-sm flex justify-between items-center"
-                                        >
-                                            {nearbyCity.name}
-                                            <ArrowRight className="w-4 h-4 opacity-50" />
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div className="mt-6 pt-6 border-t border-slate-100">
-                                <Link href="/locations" className="w-full block text-center bg-slate-900 text-white py-3 rounded-lg font-bold text-sm hover:bg-slate-800 transition">
-                                    View All {data.state} Locations
-                                </Link>
-                            </div>
-                        </div>
+                        <SiloMesh cities={data.nearby} currentCity={data.city} />
                     </div>
-
                 </div>
             </section>
 
-            {/* --- CTA BANNER --- */}
-            <section className="bg-brand-600 py-16 text-center text-white">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-6">Need a Plumber in {data.city} Now?</h2>
-                    <p className="text-brand-100 text-lg mb-8 max-w-2xl mx-auto">
-                        Our dispatchers are standing by. No extra charge for nights or weekends.
-                    </p>
-                    <a href={`tel:${data.phone.replace(/\D/g, '')}`} className="inline-flex items-center gap-3 bg-white text-brand-700 px-8 py-4 rounded-full font-bold text-xl shadow-lg hover:bg-slate-50 transition-all hover:scale-105">
-                        <Phone className="w-6 h-6" />
-                        {data.phone}
-                    </a>
+            {/* 6. REVIEWS SECTION */}
+            <section className="py-24 bg-slate-50">
+                <div className="container mx-auto px-4 text-center max-w-4xl">
+                    <div className="flex justify-center mb-6">
+                        {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-8 h-8 text-yellow-400 fill-current" />)}
+                    </div>
+                    <h2 className="text-3xl font-bold text-slate-900 mb-8">"{data.city}'s Best Kept Secret"</h2>
+                    <blockquote className="text-2xl text-slate-600 italic leading-relaxed mb-8">
+                        "I called three other plumbers in {data.city} and none could come out until Monday. DesertEdge was here in 40 minutes and fixed the leak for half the price the others quoted."
+                    </blockquote>
+                    <div className="font-bold text-brand-600">— Jennifer M., {data.city} Resident</div>
                 </div>
             </section>
-        </>
+
+            {/* 7. FAQ (Localized) */}
+            {/* ... (Implement specific localized FAQ here similar to main site but with City Name injections) ... */}
+
+        </div>
     );
 }
