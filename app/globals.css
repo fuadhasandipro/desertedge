@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors - Trustworthy Blue */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-900: #1e3a8a;
+
+  /* Accent Colors - Emergency/Action Amber */
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+
+  /* Custom Shadows */
+  --shadow-soft:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 15px rgba(37, 99, 235, 0.5);
+
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+}
+
+/* Base Styles */
+body {
+  background-color: #f8fafc; /* Slate-50 */
+  color: #1e293b; /* Slate-800 */
+}
