@@ -35,7 +35,6 @@ interface CityData {
     services: ServicePageData[];
 }
 
-// ─── Data Helpers ─────────────────────────────────────────────────────────────
 function getCityData(slug: string): CityData | null {
     try {
         const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);

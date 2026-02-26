@@ -65,10 +65,16 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
     const primaryZip = data.zip_codes?.[0] || "";
 
+    const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+    const canonicalBase = `https://${data.slug}.${ROOT_DOMAIN}`;
+
     return {
         title: `${data.city}, ${data.state} Plumbing Services | 24/7 Emergency Plumbers in ${data.city}, ${data.state} ${primaryZip} Near Me`,
         description: data.meta.description || `Need a reliable plumber in ${data.city}, ${data.state}? Fast, licensed, 24/7 emergency service. Call now for plumbing, drains, and water heaters.`,
         keywords: [`plumber ${data.city}`, `emergency plumbing ${data.city} ${data.state}`, `plumbing service ${primaryZip}`],
+        alternates: {
+            canonical: canonicalBase,
+        },
     };
 }
 

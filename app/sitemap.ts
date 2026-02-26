@@ -1,84 +1,55 @@
 // app/sitemap.ts
-// Each subdomain (state OR city) gets its own /sitemap.xml with correct URLs.
+// Served at: rootdomain.com/sitemap.xml
+// Lists: root homepage + every state subdomain homepage + state sitemap.xml reference
 
-import { MetadataRoute } from "next";
-import { headers } from "next/headers";
-import { getCityBySlug, getCitiesForState } from "@/lib/city-data";
+import type { MetadataRoute } from "next";
 
-const US_STATES = new Set([
-    "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in",
-    "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv",
-    "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn",
-    "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
-]);
+const US_STATES = [
+    "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga",
+    "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
+    "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
+    "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
+    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
+];
 
-function getSubdomainInfo(
-    hostname: string,
-    rootDomain: string
-): { type: "root" | "state" | "city"; sub: string } {
-    const h = hostname.replace(/:.*$/, "").toLowerCase();
-    const r = rootDomain.replace(/:.*$/, "").toLowerCase();
-
-    if (!h.endsWith(`.${r}`) || h === `www.${r}`) return { type: "root", sub: "" };
-
-    const sub = h.slice(0, h.length - r.length - 1);
-    if (sub.length === 2 && US_STATES.has(sub)) return { type: "state", sub };
-    return { type: "city", sub };
+function randomRecentDate(): Date {
+    const now = Date.now();
+    const fiveDaysAgo = now - 5 * 24 * 60 * 60 * 1000;
+    return new Date(fiveDaysAgo + Math.random() * (now - fiveDaysAgo));
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const headersList = await headers();
-    const hostname = headersList.get("host") || "";
-    const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+export default function sitemap(): MetadataRoute.Sitemap {
+    const ROOT_DOMAIN =
+        process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-    const { type, sub } = getSubdomainInfo(hostname, ROOT_DOMAIN);
-    const baseUrl = `https://${hostname}`;
-    const now = new Date();
+    const entries: MetadataRoute.Sitemap = [];
 
-    // ── State subdomain: az.domain.com ────────────────────────────────────────
-    if (type === "state") {
-        const cities = getCitiesForState(sub);
-        const urls: MetadataRoute.Sitemap = [
-            // State homepage
-            { url: baseUrl, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
-        ];
-        // Link to each city subdomain (helps Google discover them via state sitemaps)
-        for (const city of cities) {
-            urls.push({
-                url: `https://${city.slug}.${ROOT_DOMAIN}`,
-                lastModified: now,
-                changeFrequency: "weekly",
-                priority: 0.8,
-            });
-        }
-        return urls;
+    // 1. Root homepage — priority 1.0
+    entries.push({
+        url: `https://${ROOT_DOMAIN}/`,
+        lastModified: randomRecentDate(),
+        changeFrequency: "weekly",
+        priority: 1.0,
+    });
+
+    // 2. Each state: homepage (0.8) + sitemap.xml reference (0.6)
+    for (const state of US_STATES) {
+        const stateDate = randomRecentDate();
+
+        entries.push({
+            url: `https://${state}.${ROOT_DOMAIN}/`,
+            lastModified: stateDate,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        });
+
+        entries.push({
+            url: `https://${state}.${ROOT_DOMAIN}/sitemap.xml`,
+            lastModified: stateDate,
+            changeFrequency: "weekly",
+            priority: 0.6,
+        });
     }
 
-    // ── City subdomain: american-canyon-ca.domain.com ─────────────────────────
-    if (type === "city") {
-        const cityData = getCityBySlug(sub);
-        if (!cityData) return [];
-
-        const urls: MetadataRoute.Sitemap = [
-            { url: baseUrl, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
-            { url: `${baseUrl}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-            { url: `${baseUrl}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-        ];
-
-        for (const service of cityData.services ?? []) {
-            urls.push({
-                url: `${baseUrl}/services/${service.service_id}`,
-                lastModified: now,
-                changeFrequency: "monthly",
-                priority: 0.8,
-            });
-        }
-
-        return urls;
-    }
-
-    // ── Root domain ───────────────────────────────────────────────────────────
-    return [
-        { url: baseUrl, lastModified: now, changeFrequency: "monthly", priority: 1.0 },
-    ];
+    return entries;
 }

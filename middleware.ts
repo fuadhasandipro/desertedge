@@ -1,5 +1,4 @@
-// middleware.ts — project ROOT next to package.json
-
+// middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -27,14 +26,29 @@ export function middleware(req: NextRequest) {
     const hostWithoutPort = hostname.replace(/:.*$/, "");
     const rootWithoutPort = ROOT_DOMAIN.replace(/:.*$/, "");
 
-    // ── 1. Block direct access to internal routing paths ─────────────────────
-    // Googlebot and users hitting these paths directly get a hard 404.
+    // ── 1. Redirect direct access to specific subdomains ──────────────────────
     if (
         currentPath.startsWith("/city-sites") ||
         currentPath.startsWith("/state-sites")
     ) {
-        url.pathname = "/404";
-        return NextResponse.rewrite(url, { status: 404 });
+        // Break down the path: ["", "city-sites", "dallas-tx", "about"]
+        const pathParts = currentPath.split("/").filter(Boolean);
+        const subSlug = pathParts[1]; // e.g., "dallas-tx"
+        const remainingPath = pathParts.slice(2).join("/"); // e.g., "about"
+
+        if (subSlug) {
+            // Construct the proper subdomain URL
+            const redirectUrl = req.nextUrl.clone();
+            redirectUrl.hostname = `${subSlug}.${rootWithoutPort}`;
+            redirectUrl.pathname = `/${remainingPath}`;
+
+            // 308 is a Permanent Redirect (preserves the original HTTP method)
+            return NextResponse.redirect(redirectUrl, 308);
+        } else {
+            // If they access the exact folder /city-sites/ with no slug, fallback to 404
+            url.pathname = "/404";
+            return NextResponse.rewrite(url, { status: 404 });
+        }
     }
 
     // ── 2. Detect subdomain ───────────────────────────────────────────────────
