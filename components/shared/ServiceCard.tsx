@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { PHONE_NUMBER_TEL } from '@/data/constants';
 
 interface ServiceCardProps {
     title: string;
@@ -29,7 +30,7 @@ export default function ServiceCard({ title, description, href }: ServiceCardPro
 
             {/* Action Button */}
             <Link
-                href="tel:+99023920"
+                href={PHONE_NUMBER_TEL}
                 className="mt-auto inline-flex items-center border border-slate-200 px-5 py-2 hover:border-slate-300 hover:bg-slate-50 transition-all group"
             >
                 <span className="font-medium text-slate-900 mr-3">Get Quotes</span>

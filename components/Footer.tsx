@@ -1,6 +1,7 @@
 // components/Footer.tsx (or wherever your SiteFooter is located)
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter, Linkedin, PhoneCall } from 'lucide-react';
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from '@/data/constants';
 
 interface FooterProps {
     stateName?: string;
@@ -9,7 +10,7 @@ interface FooterProps {
 
 export default function SiteFooter({
     stateName = "USA",
-    phone = "(833) 708-3641"
+    phone = PHONE_NUMBER
 }: FooterProps) {
 
     // Dynamically set based on the props passed (Defaults to USA)
@@ -43,7 +44,7 @@ export default function SiteFooter({
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="text-accent-500 w-5 h-5 shrink-0" />
-                                <a href={`tel:${phone.replace(/\D/g, '')}`} className="hover:text-white transition-colors">
+                                <a href={`${PHONE_NUMBER_TEL}`} className="hover:text-white transition-colors">
                                     {phone}
                                 </a>
                             </li>
@@ -93,7 +94,7 @@ export default function SiteFooter({
 
             {/* FLOATING CALL BUTTON */}
             <a
-                href={`tel:${phone.replace(/\D/g, '')}`}
+                href={`${PHONE_NUMBER_TEL}`}
                 className="fixed md:bottom-8 md:right-8 bottom-3 right-3 z-50 bg-brand-500 text-white p-5 rounded-full shadow-glow animate-float hover:bg-brand-700 hover:scale-110 active:scale-95 transition-all duration-300 group"
                 aria-label="Call Now"
             >

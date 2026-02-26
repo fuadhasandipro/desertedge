@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCityBySlug } from "@/lib/city-data";
 import { Phone, Clock, MapPin } from "lucide-react";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 
 interface Props {
     params: Promise<{ city: string }>;
@@ -71,8 +72,8 @@ export default async function CityContactPage({ params }: Props) {
                             </div>
                             <h3 className="text-2xl font-black text-slate-900 mb-3">Call Us Now</h3>
                             <p className="text-slate-500 mb-6">Speak directly with our local plumbing experts.</p>
-                            <a href={`tel:${cityData.phone}`} className="text-2xl font-black text-brand-600 hover:text-brand-800 transition">
-                                {cityData.phone}
+                            <a href={`${PHONE_NUMBER_TEL}`} className="text-2xl font-black text-brand-600 hover:text-brand-800 transition">
+                                {PHONE_NUMBER}
                             </a>
                         </div>
 
@@ -83,7 +84,7 @@ export default async function CityContactPage({ params }: Props) {
                             </div>
                             <h3 className="text-2xl font-black mb-3">Emergency Service</h3>
                             <p className="text-red-50 mb-6">24/7 emergency response available in {cityData.city}.</p>
-                            <a href={`tel:${cityData.phone}`} className="inline-block bg-white text-red-600 px-8 py-3 rounded-xl font-black text-xl hover:bg-red-50 transition shadow-lg">
+                            <a href={`${PHONE_NUMBER_TEL}`} className="inline-block bg-white text-red-600 px-8 py-3 rounded-xl font-black text-xl hover:bg-red-50 transition shadow-lg">
                                 Dispatch Now
                             </a>
                         </div>

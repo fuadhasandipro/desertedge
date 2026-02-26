@@ -4,6 +4,7 @@ import { CheckCircle2, ShieldCheck, Star, Clock } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { getAllStates } from "@/lib/city-data";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 
 export const services = [
   {
@@ -221,7 +222,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                <GlowingButton href="tel:+18336090936" text="Call (833) 609-0936" icon="phone" variant="secondary" />
+                <GlowingButton href={PHONE_NUMBER_TEL} text={`Call ${PHONE_NUMBER}`} icon="phone" variant="secondary" />
                 <GlowingButton href="/services" text="Our Services" icon="arrow" variant="outline" />
               </div>
 

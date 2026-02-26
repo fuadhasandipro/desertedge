@@ -6,6 +6,7 @@ import { CheckCircle2, ShieldCheck, Star, Clock } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { getCitiesForState } from "@/lib/city-data";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 
 export default async function StatePage({
     params,
@@ -224,7 +225,7 @@ export default async function StatePage({
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                            <GlowingButton href="tel:+18336090936" text="Call Now: (833) 609-0936" />
+                            <GlowingButton href={PHONE_NUMBER_TEL} text={`Call Now: ${PHONE_NUMBER}`} />
                         </div>
 
                         {/* TRUST BADGES */}

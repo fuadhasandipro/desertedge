@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCityBySlug } from "@/lib/city-data";
 import { Phone, ShieldCheck, Heart, Wrench } from "lucide-react";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 
 interface Props {
     params: Promise<{ city: string }>;
@@ -59,9 +60,9 @@ export default async function CityAboutPage({ params }: Props) {
                         For over 50 years, we have been the gold standard for plumbing excellence in {cityData.city}. We combine nationwide resources with hometown values.
                     </p>
                     <div className="flex justify-center">
-                        <a href={`tel:${cityData.phone}`} className="flex items-center gap-3 bg-white text-brand-900 font-extrabold text-xl px-10 py-4 rounded-xl shadow-glow transition-transform hover:-translate-y-1">
+                        <a href={`${PHONE_NUMBER_TEL}`} className="flex items-center gap-3 bg-white text-brand-900 font-extrabold text-xl px-10 py-4 rounded-xl shadow-glow transition-transform hover:-translate-y-1">
                             <Phone className="w-6 h-6 text-accent-600" />
-                            <span>{cityData.phone}</span>
+                            <span>{PHONE_NUMBER}</span>
                         </a>
                     </div>
                 </div>

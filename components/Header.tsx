@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Phone, MapPin, Clock, Menu, X } from 'lucide-react'; // Added X for closing menu
 import { useState } from 'react';
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from '@/data/constants';
 
 export default function Header({
     city,
@@ -16,7 +17,7 @@ export default function Header({
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Default fallback if on main domain
-    const displayPhone = phone || "(888) 555-0123";
+    const displayPhone = PHONE_NUMBER;
     const displayLocation = city ? `Serving ${city}` : "Nationwide Service";
 
     return (
@@ -70,7 +71,7 @@ export default function Header({
 
                     {/* CTA Button - PHONE ONLY, NO BOOKING */}
                     <div className="flex items-center gap-4">
-                        <a href={`tel:${displayPhone.replace(/\D/g, '')}`}
+                        <a href={`${PHONE_NUMBER_TEL}`}
                             className="hidden md:flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-full font-bold shadow-lg hover:bg-blue-700 hover:scale-105 transition-all duration-300 group">
                             <Phone className="w-4 h-4 animate-pulse" />
                             <span>{displayPhone}</span>
@@ -93,7 +94,7 @@ export default function Header({
                             )}
                             <Link href="/about" onClick={() => setIsMenuOpen(false)}>About Us</Link>
                             <Link href="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-                            <a href={`tel:${displayPhone.replace(/\D/g, '')}`} className="flex items-center gap-2 text-blue-600 font-bold">
+                            <a href={`${PHONE_NUMBER_TEL}`} className="flex items-center gap-2 text-blue-600 font-bold">
                                 <Phone className="w-4 h-4" /> Call {displayPhone}
                             </a>
                         </nav>

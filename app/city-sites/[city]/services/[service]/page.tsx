@@ -9,6 +9,7 @@ import { ShieldCheck, ChevronDown, CheckCircle2 } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import type { Metadata } from "next";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface ServicePageData {
@@ -28,7 +29,6 @@ interface CityData {
     state: string;
     county_name: string;
     slug: string;
-    phone: string;
     nearby_cities: { name: string; slug: string; state: string }[];
     zip_codes: string[];
     faqs: { q: string; a: string }[];
@@ -104,7 +104,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
         signs_you_need_section, our_process_section, service_area_section,
     } = serviceData;
 
-    const { city: cityName, state, county_name, phone, nearby_cities, zip_codes, faqs, services } = cityData;
+    const { city: cityName, state, county_name, nearby_cities, zip_codes, faqs, services } = cityData;
 
     const relevantFaqs = faqs.slice(0, 5);
     const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
@@ -151,7 +151,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                     <p className="text-white text-brand-200 max-w-2xl mx-auto mb-10 leading-relaxed">
                         {hero.body}
                     </p>
-                    <GlowingButton href={`tel:${phone}`} text={hero.cta_label} icon="phone" variant="primary" />
+                    <GlowingButton href={`${PHONE_NUMBER_TEL}`} text={`Call: ${PHONE_NUMBER}`} icon="phone" variant="primary" />
                 </div>
             </section>
 
@@ -256,7 +256,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                     <p className="text-brand-100 mb-8 text-lg">
                         Call us now — we're available 24/7 for emergencies across {cityName} and {county_name} County.
                     </p>
-                    <GlowingButton href={`tel:${phone}`} text={`Call ${phone}`} icon="phone" variant="secondary" />
+                    <GlowingButton href={`${PHONE_NUMBER_TEL}`} text={`Call: ${PHONE_NUMBER}`} icon="phone" variant="secondary" />
                 </div>
             </section>
         </div>
