@@ -223,7 +223,6 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
                 <GlowingButton href={PHONE_NUMBER_TEL} text={`Call ${PHONE_NUMBER}`} icon="phone" variant="secondary" />
-                <GlowingButton href="/services" text="Our Services" icon="arrow" variant="outline" />
               </div>
 
               <div className="mt-12 pt-8 border-t border-white/10 flex flex-wrap justify-center lg:justify-start gap-8 text-base font-medium text-brand-100">
