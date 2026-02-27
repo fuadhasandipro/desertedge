@@ -17,7 +17,7 @@ const US_STATES = new Set([
     "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
 ]);
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     const hostname = req.headers.get("host") || "";
     const currentPath = url.pathname;

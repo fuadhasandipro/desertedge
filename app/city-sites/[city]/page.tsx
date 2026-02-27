@@ -269,7 +269,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                         <div className="flex-1 relative aspect-[4/3] lg:aspect-auto lg:h-[450px]">
                             <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] rotate-2 z-0" />
                             <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white h-full">
-                                <Image src="/images/emergency-plumbing.jpeg" alt="Plumbing Service" fill className="object-cover" />
+                                <Image src="https://ik.imagekit.io/nang9yead/Plumber%20Fixing%20Leaking%20Sink%20Pipe%20with%20Wrench.png" alt="Plumbing Service" fill className="object-cover" />
                             </div>
                         </div>
                         <div className="flex-1 max-w-2xl">
