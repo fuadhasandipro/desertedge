@@ -2,12 +2,10 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import fs from "fs";
-import path from "path";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { MapPin, Award, ChevronDown } from "lucide-react";
-import { getCitiesForState } from "@/lib/city-data";
+import { getCityBySlug, getAllCitySlugs } from "@/lib/city-data";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NearbyCity { name: string; slug: string; state: string; }
@@ -40,26 +38,14 @@ interface CityData {
 }
 
 // ─── Data Helpers ─────────────────────────────────────────────────────────────
-function getCityData(slug: string): CityData | null {
-    try {
-        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
-        const raw = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(raw) as CityData;
-    } catch {
-        return null;
-    }
-}
-
 export async function generateStaticParams() {
-    const citiesDir = path.join(process.cwd(), 'data', 'cities');
-    const files = fs.readdirSync(citiesDir).filter(f => f.endsWith('.json'));
-    return files.map(f => ({ city: f.replace('.json', '') }));
+    return getAllCitySlugs().map(slug => ({ city: slug }));
 }
 
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityData(city);
+    const data = getCityBySlug(city);
 
     if (!data) return { title: "Plumber Near Me" };
 
@@ -80,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityData(city);
+    const data = getCityBySlug(city);
 
     if (!data) notFound();
 

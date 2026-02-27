@@ -3,13 +3,12 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import fs from "fs";
-import path from "path";
 import { ShieldCheck, ChevronDown, CheckCircle2 } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import type { Metadata } from "next";
 import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
+import { getCityBySlug } from "@/lib/city-data";
 
 // ─── Image Mapping ─────────────────────────────────────────────────────────────
 const serviceImages: Record<string, string> = {
@@ -80,51 +79,16 @@ interface ServicePageData {
     related_services: { service_id: string; label: string }[];
 }
 
-interface CityData {
-    city: string;
-    state: string;
-    county_name: string;
-    slug: string;
-    nearby_cities: { name: string; slug: string; state: string }[];
-    zip_codes: string[];
-    faqs: { q: string; a: string }[];
-    services: ServicePageData[];
-}
 
-function getCityData(slug: string): CityData | null {
-    try {
-        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
-        const raw = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(raw) as CityData;
-    } catch {
-        return null;
-    }
-}
 
 export async function generateStaticParams() {
-    // const citiesDir = path.join(process.cwd(), 'data', 'cities');
-    // const files = fs.readdirSync(citiesDir).filter(f => f.endsWith('.json'));
-
-    // const params: { city: string; service: string }[] = [];
-
-    // for (const file of files) {
-    //     const citySlug = file.replace('.json', '');
-    //     const cityData = getCityData(citySlug);
-    //     if (!cityData?.services) continue;
-    //     for (const service of cityData.services) {
-    //         params.push({ city: citySlug, service: service.service_id });
-    //     }
-    // }
-
-    // return params;
-
-    return []
+    return [];
 }
 
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string; service: string }> }): Promise<Metadata> {
     const { city, service } = await params;
-    const cityData = getCityData(city);
+    const cityData = getCityBySlug(city);
     const serviceData = cityData?.services.find(s => s.service_id === service);
 
     if (!serviceData || !cityData) return { title: "Service Not Found" };
@@ -151,7 +115,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 export default async function SingleServicePage({ params }: { params: Promise<{ city: string; service: string }> }) {
     const { city, service } = await params;
 
-    const cityData = getCityData(city);
+    const cityData = getCityBySlug(city);
     if (!cityData) notFound();
 
     const serviceData = cityData.services.find(s => s.service_id === service);
