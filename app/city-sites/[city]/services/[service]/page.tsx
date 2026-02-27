@@ -102,21 +102,23 @@ function getCityData(slug: string): CityData | null {
 }
 
 export async function generateStaticParams() {
-    const citiesDir = path.join(process.cwd(), 'data', 'cities');
-    const files = fs.readdirSync(citiesDir).filter(f => f.endsWith('.json'));
+    // const citiesDir = path.join(process.cwd(), 'data', 'cities');
+    // const files = fs.readdirSync(citiesDir).filter(f => f.endsWith('.json'));
 
-    const params: { city: string; service: string }[] = [];
+    // const params: { city: string; service: string }[] = [];
 
-    for (const file of files) {
-        const citySlug = file.replace('.json', '');
-        const cityData = getCityData(citySlug);
-        if (!cityData?.services) continue;
-        for (const service of cityData.services) {
-            params.push({ city: citySlug, service: service.service_id });
-        }
-    }
+    // for (const file of files) {
+    //     const citySlug = file.replace('.json', '');
+    //     const cityData = getCityData(citySlug);
+    //     if (!cityData?.services) continue;
+    //     for (const service of cityData.services) {
+    //         params.push({ city: citySlug, service: service.service_id });
+    //     }
+    // }
 
-    return params;
+    // return params;
+
+    return []
 }
 
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
