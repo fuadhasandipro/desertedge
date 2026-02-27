@@ -88,10 +88,19 @@ export function proxy(req: NextRequest) {
     // american-canyon-ca.domain.com/ → /city-sites/american-canyon-ca
     // american-canyon-ca.domain.com/services/leak-repair
     //                                → /city-sites/american-canyon-ca/services/leak-repair
-    const rewritePath =
+    let rewritePath =
         currentPath === "/"
             ? `/city-sites/${sub}`
             : `/city-sites/${sub}${currentPath}`;
+
+    // Combine legacy sitemaps into the single sitemap.xml
+    if (
+        rewritePath.endsWith("/main-sitemap.xml") ||
+        rewritePath.endsWith("/services-sitemap.xml") ||
+        rewritePath.endsWith("/sitemap-index.xml")
+    ) {
+        rewritePath = `/city-sites/${sub}/sitemap.xml`;
+    }
 
     url.pathname = rewritePath;
     return NextResponse.rewrite(url);

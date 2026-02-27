@@ -101,6 +101,24 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // ── 3.5 REWRITES ───────────────────────────────────────────────────────────
+  async rewrites() {
+    return [
+      {
+        source: "/main-sitemap.xml",
+        destination: "/sitemap.xml",
+      },
+      {
+        source: "/services-sitemap.xml",
+        destination: "/sitemap.xml",
+      },
+      {
+        source: "/sitemap-index.xml",
+        destination: "/sitemap.xml",
+      },
+    ];
+  },
+
   // ── 4. COMPILER OPTIONS ────────────────────────────────────────────────────
   compiler: {
     // Remove console.log in production — reduces bundle size
