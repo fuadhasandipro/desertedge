@@ -1,0 +1,98 @@
+# AWS Deployment Guide for Next.js (Free Tier)
+
+This guide outlines the architecture and step-by-step process to deploy your Next.js application (designed for 64K pages using ISR) to AWS while keeping costs minimal (Free Tier).
+
+## Architecture Overview
+**Internet → Route 53 (DNS) → CloudFront (CDN) → ALB (Load Balancer) → EC2 t2.micro (Docker Container)**
+
+- **EC2 t2.micro**: Runs your Next.js app inside a Docker container (Standalone mode). Free for 12 months (750 hrs/mo).
+- **ECR**: Stores your Docker image. Free tier (500 MB/month).
+- **ALB**: Routes traffic and terminates SSL. Free for 12 months.
+- **CloudFront**: Caches static assets globally. Perpetually free tier (1TB/mo).
+- **Route 53**: Handles your wildcard subdomains (e.g., `*.rootdomain.com`). This is the only part that has a tiny cost (~$0.50/mo).
+
+## 1. Project Preparation (Completed ✅)
+We have already prepared your repository for Docker deployment:
+- Enabled `output: 'standalone'` in [next.config.ts](file:///f:/Hustle/desertedge/next.config.ts) to dramatically reduce the image size.
+- Created a production-ready multi-stage [Dockerfile](file:///f:/Hustle/desertedge/Dockerfile).
+- Created a [.dockerignore](file:///f:/Hustle/desertedge/.dockerignore) file.
+
+## 2. Infrastructure Setup Instructions
+
+### Step A: Amazon ECR (Elastic Container Registry)
+1. Go to the AWS Console → **ECR**.
+2. Create a private repository named `desertedge`.
+3. Click "View push commands" and run them locally to build and push your Docker image to AWS.
+
+### Step B: IAM Role for EC2
+1. Go to **IAM** → **Roles** → **Create Role**.
+2. Select **AWS Service** → **EC2**.
+3. Attach the policy: `AmazonEC2ContainerRegistryReadOnly`.
+4. Name the role (e.g., `EC2_Pull_ECR_Role`).
+
+### Step C: Amazon EC2 (Compute)
+1. Go to **EC2** → **Launch Instance**.
+2. Choose **Amazon Linux 2023** AMI and Instance type **t2.micro** (Free tier eligible).
+3. Under **IAM instance profile**, select the role you created `EC2_Pull_ECR_Role`.
+4. Under **Network settings**, create a Security Group:
+   - Allow SSH (port 22) from your IP.
+   - Allow Custom TCP (port 3000) from Anywhere (Later, restrict this to ALB only).
+5. In **Advanced Details** → **User data**, paste the following script to automatically install Docker and run your app on boot:
+   ```bash
+   #!/bin/bash
+   sudo yum update -y
+   sudo yum install docker -y
+   sudo service docker start
+   sudo usermod -a -G docker ec2-user
+   
+   # Log in to ECR (Replace <YOUR_ACCOUNT_ID> and <REGION>)
+   aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <YOUR_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+   
+   # Pull and run the container
+   docker pull <YOUR_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/desertedge:latest
+   docker run -d -p 3000:3000 --name desertedge-app -e NODE_ENV=production <YOUR_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/desertedge:latest
+   ```
+
+### Step D: Application Load Balancer (ALB) & SSL
+1. Go to **AWS Certificate Manager (ACM)** (must be in the same region as your ALB).
+2. Request a public certificate for `rootdomain.com` and `*.rootdomain.com`. Validate via DNS.
+3. Go to **EC2** → **Target Groups** → **Create**. Select **Instances**, port 3000, and register your EC2 instance.
+4. Go to **EC2** → **Load Balancers** → **Create ALB**.
+5. Select Internet-facing. Add an HTTPS listener (port 443) forwarding to your Target Group.
+6. Attach the ACM SSL certificate.
+
+### Step E: CloudFront (CDN for Speed)
+1. Go to **CloudFront** → **Create Distribution**.
+2. Origin domain: Select your ALB.
+3. Protocol Policy: Redirect HTTP to HTTPS.
+4. **Cache Key and Origin Requests**: Create a custom policy to forward the `Host` header (crucial for Next.js middleware and your wildcard subdomains).
+5. Add an Alternate Domain Name (CNAME): `rootdomain.com`, `*.rootdomain.com`.
+6. Attach an ACM certificate (must be generated in `us-east-1` region for CloudFront).
+
+### Step F: Route 53 (DNS)
+1. Go to **Route 53**.
+2. Create an A Record for `rootdomain.com`. Turn on **Alias** and route traffic to the **CloudFront Distribution**.
+3. Create a wildcard A Record `*.rootdomain.com`. Turn on **Alias** and point it to the same CloudFront Distribution.
+
+---
+
+---
+
+## Automated CLI Setup (Alternative to Manual Steps)
+I have generated an automated Bash script at [f:\Hustle\desertedge\aws-deploy.sh](file:///f:/Hustle/desertedge/aws-deploy.sh). 
+
+This script will automatically:
+1. Create your ECR repository and push the Docker image
+2. Create the necessary IAM Roles and Profiles
+3. Create an EC2 Security Group (Ports 22 & 3000)
+4. Launch the `t2.micro` EC2 instance and run your Next.js container automatically.
+
+### How to run it:
+1. Ensure the AWS CLI is installed and configured (`aws configure`).
+2. Run the script from git bash or WSL:
+   ```bash
+   chmod +x aws-deploy.sh
+   ./aws-deploy.sh rootdomain.com
+   ```
+   
+*(Note: You will still need to manually configure the SSL Certificate, ALB, CloudFront, and Route 53 via the AWS Console because those require manual DNS validation steps which cannot be safely automated in a single script).*

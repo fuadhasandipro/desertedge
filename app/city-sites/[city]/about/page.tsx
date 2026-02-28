@@ -38,7 +38,7 @@ export default async function CityAboutPage({ params }: Props) {
             <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-brand-900 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="https://www.gdprofessionalplumbing.com/hero-bg.jpg" // Replace with your actual hero image
+                        src="/images/bg.jpg" // Replace with your actual hero image
                         alt={`Plumbing Team serving ${cityData.city}`}
                         fill
                         className="object-cover opacity-20"

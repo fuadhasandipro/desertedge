@@ -3,12 +3,69 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import fs from "fs";
+import path from "path";
 import { ShieldCheck, ChevronDown, CheckCircle2 } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import type { Metadata } from "next";
 import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
-import { getCityBySlug } from "@/lib/city-data";
+
+// ─── Image Mapping ─────────────────────────────────────────────────────────────
+const serviceImages: Record<string, string> = {
+    "tankless": "/images/tankless.jpg",
+    "emergency-plumbing": "/images/emergency-plumbing.jpeg",
+    "leak-repair": "/images/leak-repair.jpg",
+    "drain-cleaning": "/images/drain-cleaning.jpg",
+    "pipe-installation": "/images/pipe-installation.jpg",
+    "water-heater": "/images/water-heater.jpg",
+    "toilet": "/images/toilet-repair.webp",
+    "boiler": "/images/boiler.webp",
+    "shower": "/images/shower.jpg",
+    "filtration": "/images/filtration.webp",
+    "softener": "/images/softener.jpg",
+    "faucet-repair": "/images/faucet-repair.jpg",
+    "garbage-disposal": "/images/garbage-disposal.jpg",
+    "sump-pump": "/images/sump-pump.png",
+    "gas-line": "/images/gas-line.webp",
+    "sewer-line": "/images/sewer-line.jpg",
+    "commercial-plumbing": "/images/commercial-plumbing.jpg",
+    "backflow": "/images/backflow.jpeg",
+    "sink": "/images/sink.jpg",
+    "video": "/images/video.png",
+    "hydro": "/images/hydro.jfif",
+    "water-line": "/images/water-line.jpg",
+    "grease-trap": "/images/grease-trap.jpg",
+    "default": "/images/default.jpeg"
+};
+
+const getServiceImage = (serviceId: string) => {
+    const id = serviceId.toLowerCase();
+
+    // Direct matches
+    const match = Object.keys(serviceImages).find(key => id.includes(key));
+    if (match) return serviceImages[match];
+
+    // Smart Keyword Fallbacks for the 45 services
+    if (id.includes("tankless")) return serviceImages["tankless"];
+    if (id.includes("emergency") || id.includes("24") || id.includes("burst")) return serviceImages["emergency-plumbing"];
+    if (id.includes("sink")) return serviceImages["sink"];
+    if (id.includes("softener")) return serviceImages["softener"];
+    if (id.includes("filtration")) return serviceImages["filtration"];
+    if (id.includes("video")) return serviceImages["video"];
+    if (id.includes("clog") || id.includes("jetting") || id.includes("clear") || id.includes("drain")) return serviceImages["drain-cleaning"];
+    if (id.includes("repiping") || id.includes("pipe")) return serviceImages["pipe-installation"];
+    if (id.includes("fixture") || id.includes("tub") || id.includes("shower") || id.includes("toilet") || id.includes("faucet") || id.includes("disposal")) return serviceImages["faucet-repair"];
+    if (id.includes("boiler") || id.includes("tankless") || id.includes("heater")) return serviceImages["water-heater"];
+    if (id.includes("grease") || id.includes("backflow") || id.includes("construction") || id.includes("remodel") || id.includes("commercial")) return serviceImages["commercial-plumbing"];
+    if (id.includes("trenchless") || id.includes("video") || id.includes("camera") || id.includes("sewer")) return serviceImages["sewer-line"];
+    if (id.includes("filtration") || id.includes("softener") || id.includes("pump")) return serviceImages["water-heater"]; // fallback
+    if (id.includes("gas")) return serviceImages["gas-line"];
+    if (id.includes("detection") || id.includes("leak") || id.includes("repair")) return serviceImages["leak-repair"];
+
+    // Default catch-all
+    return serviceImages["default"];
+};
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface ServicePageData {
@@ -23,16 +80,40 @@ interface ServicePageData {
     related_services: { service_id: string; label: string }[];
 }
 
+interface CityData {
+    city: string;
+    state: string;
+    county_name: string;
+    slug: string;
+    nearby_cities: { name: string; slug: string; state: string }[];
+    zip_codes: string[];
+    faqs: { q: string; a: string }[];
+    services: ServicePageData[];
+}
 
+function getCityData(slug: string): CityData | null {
+    try {
+        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        return JSON.parse(raw) as CityData;
+    } catch {
+        return null;
+    }
+}
+
+export const revalidate = 86400; // Cache for 24 hours
+export const dynamicParams = true; // Build pages on-demand
 
 export async function generateStaticParams() {
+    // Return an empty array to prevent building 2.8M pages at build time.
+    // They will be built on-demand with ISR.
     return [];
 }
 
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string; service: string }> }): Promise<Metadata> {
     const { city, service } = await params;
-    const cityData = getCityBySlug(city);
+    const cityData = getCityData(city);
     const serviceData = cityData?.services.find(s => s.service_id === service);
 
     if (!serviceData || !cityData) return { title: "Service Not Found" };
@@ -59,7 +140,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 export default async function SingleServicePage({ params }: { params: Promise<{ city: string; service: string }> }) {
     const { city, service } = await params;
 
-    const cityData = getCityBySlug(city);
+    const cityData = getCityData(city);
     if (!cityData) notFound();
 
     const serviceData = cityData.services.find(s => s.service_id === service);
@@ -128,7 +209,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                         <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] rotate-2 z-0" />
                         <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] lg:aspect-auto lg:h-[450px]">
                             <Image
-                                src="https://ik.imagekit.io/nang9yead/Plumber%20Fixing%20Leaking%20Sink%20Pipe%20with%20Wrench.png"
+                                src={getServiceImage(serviceData.service_id)}
                                 alt={`${serviceData.service_title} in ${cityName}`}
                                 fill
                                 className="object-cover"
@@ -216,7 +297,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
             </section>
 
             {/* BOTTOM CTA */}
-            <section className="py-16 bg-brand-600 text-white text-center">
+            <section className="py-16 mb-0 bg-slate-900 text-white text-center">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-extrabold mb-4">Need {serviceData.service_title} in {cityName}?</h2>
                     <p className="text-brand-100 mb-8 text-lg">

@@ -11,13 +11,6 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
       }, {
         protocol: 'https',
-        hostname: 'www.gdprofessionalplumbing.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'austin.gdprofessionalplumbing.com',
-      }, {
-        protocol: 'https',
         hostname: 'ik.imagekit.io',
       }, {
         protocol: 'https',
@@ -108,24 +101,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // ── 3.5 REWRITES ───────────────────────────────────────────────────────────
-  async rewrites() {
-    return [
-      {
-        source: "/main-sitemap.xml",
-        destination: "/sitemap.xml",
-      },
-      {
-        source: "/services-sitemap.xml",
-        destination: "/sitemap.xml",
-      },
-      {
-        source: "/sitemap-index.xml",
-        destination: "/sitemap.xml",
-      },
-    ];
-  },
-
   // ── 4. COMPILER OPTIONS ────────────────────────────────────────────────────
   compiler: {
     // Remove console.log in production — reduces bundle size
@@ -145,8 +120,8 @@ const nextConfig: NextConfig = {
   },
 
   // ── 7. OUTPUT ──────────────────────────────────────────────────────────────
-  // If deploying to a Node server (not Vercel), uncomment:
-  // output: "standalone",
+  // If deploying to a Node server (not Vercel) or Docker:
+  output: "standalone",
 
   // ── 8. POWERED BY HEADER ───────────────────────────────────────────────────
   // Don't advertise you're using Next.js (minor security hardening)

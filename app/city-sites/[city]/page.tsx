@@ -2,10 +2,12 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import fs from "fs";
+import path from "path";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { MapPin, Award, ChevronDown } from "lucide-react";
-import { getCityBySlug, getAllCitySlugs } from "@/lib/city-data";
+import { getCitiesForState } from "@/lib/city-data";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NearbyCity { name: string; slug: string; state: string; }
@@ -38,14 +40,29 @@ interface CityData {
 }
 
 // ─── Data Helpers ─────────────────────────────────────────────────────────────
+function getCityData(slug: string): CityData | null {
+    try {
+        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        return JSON.parse(raw) as CityData;
+    } catch {
+        return null;
+    }
+}
+
+export const revalidate = 86400; // Cache for 24 hours
+export const dynamicParams = true; // Build pages on-demand
+
 export async function generateStaticParams() {
-    return getAllCitySlugs().map(slug => ({ city: slug }));
+    // Return an empty array to prevent building 64K pages at build time.
+    // With dynamicParams = true, Next.js will build them on-demand (ISR).
+    return [];
 }
 
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityBySlug(city);
+    const data = getCityData(city);
 
     if (!data) return { title: "Plumber Near Me" };
 
@@ -66,7 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityBySlug(city);
+    const data = getCityData(city);
 
     if (!data) notFound();
 
@@ -269,7 +286,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                         <div className="flex-1 relative aspect-[4/3] lg:aspect-auto lg:h-[450px]">
                             <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] rotate-2 z-0" />
                             <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white h-full">
-                                <Image src="https://ik.imagekit.io/nang9yead/Plumber%20Fixing%20Leaking%20Sink%20Pipe%20with%20Wrench.png" alt="Plumbing Service" fill className="object-cover" />
+                                <Image src="/images/emergency-plumbing.jpeg" alt="Plumbing Service" fill className="object-cover" />
                             </div>
                         </div>
                         <div className="flex-1 max-w-2xl">

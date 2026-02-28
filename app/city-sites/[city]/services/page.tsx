@@ -48,7 +48,7 @@ export default async function ServicesPage({ params }: Props) {
             <section className="relative pt-32 pb-44 bg-brand-900 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="https://www.gdprofessionalplumbing.com/hero-bg.jpg" // Replace with your actual hero image
+                        src="/images/bg.jpg" // Replace with your actual hero image
                         alt={`Plumbing Tools Background in ${cityData.city}`}
                         fill
                         className="object-cover opacity-20"
