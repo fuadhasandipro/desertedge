@@ -7,7 +7,7 @@ import path from "path";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { MapPin, Award, ChevronDown } from "lucide-react";
-import { getCitiesForState } from "@/lib/city-data";
+import { getCitiesForState, getCityBySlug } from "@/lib/city-data";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NearbyCity { name: string; slug: string; state: string; }
@@ -41,13 +41,7 @@ interface CityData {
 
 // ─── Data Helpers ─────────────────────────────────────────────────────────────
 function getCityData(slug: string): CityData | null {
-    try {
-        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
-        const raw = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(raw) as CityData;
-    } catch {
-        return null;
-    }
+    return getCityBySlug(slug) as unknown as CityData | null;
 }
 
 export const revalidate = 86400; // Cache for 24 hours

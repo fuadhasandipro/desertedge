@@ -91,14 +91,10 @@ interface CityData {
     services: ServicePageData[];
 }
 
+import { getCityBySlug } from "@/lib/city-data";
+
 function getCityData(slug: string): CityData | null {
-    try {
-        const filePath = path.join(process.cwd(), 'data', 'cities', `${slug.toLowerCase()}.json`);
-        const raw = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(raw) as CityData;
-    } catch {
-        return null;
-    }
+    return getCityBySlug(slug) as unknown as CityData | null;
 }
 
 export const revalidate = 86400; // Cache for 24 hours

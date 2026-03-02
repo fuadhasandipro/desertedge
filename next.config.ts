@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
-const rootHost = ROOT_DOMAIN.replace(/:.*$/, ""); // strip port for hostname matching
+const rootHost = ROOT_DOMAIN.replace(/:.*$/, "");
 
 const nextConfig: NextConfig = {
   images: {
@@ -121,7 +121,6 @@ const nextConfig: NextConfig = {
 
   // ── 7. OUTPUT ──────────────────────────────────────────────────────────────
   // If deploying to a Node server (not Vercel) or Docker:
-  output: "standalone",
 
   // ── 8. POWERED BY HEADER ───────────────────────────────────────────────────
   // Don't advertise you're using Next.js (minor security hardening)

@@ -1,8 +1,17 @@
-// lib/city-data.ts
-// Central helper — all pages import from here, never read fs directly.
-
 import fs from "fs";
 import path from "path";
+import AdmZip from "adm-zip";
+
+// Obfuscate the string so Next.js file-tracer doesn't statically analyze the data folder
+let zipCache: AdmZip | null = null;
+function getZip() {
+    if (!zipCache) {
+        const zipName = "data" + ".zip";
+        const zipPath = path.join(process.cwd(), zipName);
+        zipCache = new AdmZip(zipPath);
+    }
+    return zipCache;
+}
 
 export interface NearbyCity {
     name: string;
@@ -73,13 +82,15 @@ export interface CityData {
     services: Service[];
 }
 
-const CITIES_DIR = path.join(process.cwd(), "data", "cities");
-
 // ── Single city by slug ────────────────────────────────────────────────────────
 export function getCityBySlug(slug: string): CityData | null {
     try {
-        const filePath = path.join(CITIES_DIR, `${slug.toLowerCase()}.json`);
-        const raw = fs.readFileSync(filePath, "utf-8");
+        const zip = getZip();
+        // The zip-data script adds the contents of data/cities to a folder named "cities"
+        // So the path inside the zip is cities/american-canyon-ca.json
+        const entryName = `cities/${slug.toLowerCase()}.json`;
+        const raw = zip.readAsText(entryName);
+        if (!raw) return null;
         return JSON.parse(raw) as CityData;
     } catch {
         return null;
@@ -89,10 +100,14 @@ export function getCityBySlug(slug: string): CityData | null {
 // ── All city slugs (for generateStaticParams) ─────────────────────────────────
 export function getAllCitySlugs(): string[] {
     try {
-        return fs
-            .readdirSync(CITIES_DIR)
-            .filter((f) => f.endsWith(".json"))
-            .map((f) => f.replace(".json", ""));
+        const zip = getZip();
+        return zip.getEntries()
+            .filter((e) => e.entryName.startsWith("cities/") && e.entryName.endsWith(".json"))
+            .map((e) => {
+                const parts = e.entryName.split("/");
+                const filename = parts[parts.length - 1];
+                return filename.replace(".json", "");
+            });
     } catch {
         return [];
     }
