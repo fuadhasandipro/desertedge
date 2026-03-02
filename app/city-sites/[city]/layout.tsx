@@ -1,7 +1,6 @@
 // app/city-sites/[city]/layout.tsx
 import { notFound } from 'next/navigation';
-import fs from 'fs';
-import path from 'path';
+
 import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
