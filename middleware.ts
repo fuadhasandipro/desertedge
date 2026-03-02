@@ -17,7 +17,7 @@ const US_STATES = new Set([
     "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
 ]);
 
-export function proxy(req: NextRequest) {
+export default function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     const hostname = req.headers.get("host") || "";
     const currentPath = url.pathname;
@@ -61,7 +61,11 @@ export function proxy(req: NextRequest) {
         );
     }
 
-    if (subdomain === "www") subdomain = null;
+    if (subdomain === "www") {
+        const redirectUrl = req.nextUrl.clone();
+        redirectUrl.hostname = rootWithoutPort;
+        return NextResponse.redirect(redirectUrl, 308);
+    }
 
     // ── 3. Root domain — serve normally ──────────────────────────────────────
     if (!subdomain) {

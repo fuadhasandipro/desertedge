@@ -6,7 +6,6 @@
 // City-level robots — allows all service pages, blocks internals + AI bots.
 // Lists all 4 city sitemap variants so crawlers discover everything.
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function GET(

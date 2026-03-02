@@ -4,7 +4,6 @@
 // NOTE: Next.js sitemap convention only supports the filename "sitemap".
 // main-sitemap.xml must use a Route Handler. Mirrors app/sitemap.ts output.
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const US_STATES = [
