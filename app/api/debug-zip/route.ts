@@ -7,7 +7,7 @@ export async function GET() {
     const dir = __dirname;
     const filesInCwd = fs.readdirSync(cwd);
 
-    let nextServerFiles = [];
+    let nextServerFiles: any = [];
     try {
         nextServerFiles = fs.readdirSync(path.join(cwd, '.next', 'server'));
     } catch (e) {
