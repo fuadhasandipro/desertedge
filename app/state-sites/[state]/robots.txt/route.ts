@@ -6,6 +6,7 @@
 // MetadataRoute.Robots doesn't support dynamic params so we use a Route Handler.
 // Output is plain text matching robots.txt spec exactly.
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function GET(
@@ -85,7 +86,6 @@ Disallow: /
 # ── Sitemaps ─────────────────────────────────────────────────────────────────
 Sitemap: ${host}/sitemap.xml
 Sitemap: ${host}/sitemap-index.xml
-Sitemap: ${host}/main-sitemap.xml
 `;
 
     return new Response(content, {
