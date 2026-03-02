@@ -2,11 +2,14 @@ import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 
-// We directly reference "data.zip" so Next.js file-tracer natively includes it in the serverless bundle
+// We explicitly resolve data.zip so it works inside Netlify's Lambda environment
 let zipCache: AdmZip | null = null;
 function getZip() {
     if (!zipCache) {
-        const zipPath = path.join(process.cwd(), "data.zip");
+        // In Next.js serverless functions, process.cwd() is usually the right root
+        // But we wrap it in path.resolve to be safe.
+        const zipPath = path.resolve(process.cwd(), "data.zip");
+        console.log("[zip-cache] Loading zip from:", zipPath);
         zipCache = new AdmZip(zipPath);
     }
     return zipCache;
@@ -101,8 +104,8 @@ export function getAllCitySlugs(): string[] {
     try {
         const zip = getZip();
         return zip.getEntries()
-            .filter((e) => e.entryName.startsWith("cities/") && e.entryName.endsWith(".json"))
-            .map((e) => {
+            .filter((e: AdmZip.IZipEntry) => e.entryName.startsWith("cities/") && e.entryName.endsWith(".json"))
+            .map((e: AdmZip.IZipEntry) => {
                 const parts = e.entryName.split("/");
                 const filename = parts[parts.length - 1];
                 return filename.replace(".json", "");
