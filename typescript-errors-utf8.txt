@@ -1,0 +1,59 @@
+﻿app/city-sites/[city]/about/page.tsx(18,47): error TS2339: Property 'slug' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(21,50): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(21,68): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(22,80): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(22,98): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(42,64): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(53,50): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(57,80): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(60,112): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(76,112): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(79,224): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(82,99): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(103,78): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/about/page.tsx(124,101): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(18,47): error TS2339: Property 'slug' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(21,48): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(21,66): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(22,52): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(22,86): error TS2339: Property 'phone' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(36,53): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(36,71): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(45,63): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(55,92): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(86,108): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(98,94): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(99,91): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(99,108): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/contact/page.tsx(110,47): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/main-sitemap.xml/route.ts(63,36): error TS2339: Property 'services' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services-sitemap.xml/route.ts(64,36): error TS2339: Property 'services' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(19,47): error TS2339: Property 'slug' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(22,59): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(22,77): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(23,105): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(25,43): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(26,25): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(27,44): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(52,71): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(62,89): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(62,106): error TS2339: Property 'state' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(65,123): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(76,111): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(83,39): error TS2339: Property 'services' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/services/page.tsx(83,54): error TS7006: Parameter 'service' implicitly has an 'any' type.
+app/city-sites/[city]/services/page.tsx(87,132): error TS2339: Property 'city' does not exist on type 'Promise<CityData | null>'.
+app/city-sites/[city]/sitemap.xml/route.ts(63,34): error TS2339: Property 'services' does not exist on type 'Promise<CityData | null>'.
+app/state-sites/[state]/layout.tsx(21,17): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/layout.tsx(23,23): error TS7053: Element implicitly has an 'any' type because expression of type '0' can't be used to index type 'Promise<CityData[]>'.
+  Property '0' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/layout.tsx(30,117): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/layout.tsx(75,17): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/layout.tsx(77,23): error TS7053: Element implicitly has an 'any' type because expression of type '0' can't be used to index type 'Promise<CityData[]>'.
+  Property '0' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/main-sitemap.xml/route.ts(31,17): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/main-sitemap.xml/route.ts(46,24): error TS2488: Type 'Promise<CityData[]>' must have a '[Symbol.iterator]()' method that returns an iterator.
+app/state-sites/[state]/sitemap-index.xml/route.ts(22,27): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/sitemap-index.xml/route.ts(37,24): error TS2488: Type 'Promise<CityData[]>' must have a '[Symbol.iterator]()' method that returns an iterator.
+app/state-sites/[state]/sitemap.xml/route.ts(30,17): error TS2339: Property 'length' does not exist on type 'Promise<CityData[]>'.
+app/state-sites/[state]/sitemap.xml/route.ts(43,24): error TS2488: Type 'Promise<CityData[]>' must have a '[Symbol.iterator]()' method that returns an iterator.

@@ -39,8 +39,8 @@ interface CityData {
 }
 
 // ─── Data Helpers ─────────────────────────────────────────────────────────────
-function getCityData(slug: string): CityData | null {
-    return getCityBySlug(slug) as unknown as CityData | null;
+async function getCityData(slug: string): Promise<CityData | null> {
+    return (await getCityBySlug(slug)) as unknown as CityData | null;
 }
 
 export const revalidate = 86400; // Cache for 24 hours
@@ -55,7 +55,7 @@ export async function generateStaticParams() {
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityData(city);
+    const data = await getCityData(city);
 
     if (!data) return { title: "Plumber Near Me" };
 
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
     const { city } = await params;
-    const data = getCityData(city);
+    const data = await getCityData(city);
 
     if (!data) notFound();
 
@@ -171,7 +171,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white font-bold text-sm mb-6 uppercase tracking-wider">
                             <MapPin className="w-4 h-4" /> <span>{hero.badge_text}</span>
                         </div>
-                        <h1 className="text-4xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+                        <h1 className="text-3xl md:text-4xl lg:text-6xl font-extrabold text-white mb-4 lg:mb-6 leading-tight">
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700">
                                 {hero.h1_highlight}<br />
                             </span>
@@ -196,7 +196,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* ABOUT */}
-                <section className="py-24 bg-white overflow-hidden">
+                <section className="py-12 lg:py-24 bg-white overflow-hidden">
                     <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
                         <div className="flex-1 max-w-2xl">
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-brand-50 border border-brand-100 text-brand-600 font-bold text-xs uppercase tracking-widest mb-6">
@@ -240,7 +240,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* SERVICES GRID */}
-                <section className="py-24 bg-white overflow-hidden">
+                <section className="py-12 lg:py-24 bg-white overflow-hidden">
                     <div className="container mx-auto px-4" id="services">
                         <div className="mb-12 text-center lg:text-left">
                             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
@@ -262,7 +262,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* STATS */}
-                <section className="py-24 px-4 bg-brand-900 text-white">
+                <section className="py-12 lg:py-24 px-4 bg-brand-900 text-white">
                     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                         {stats.map((stat, i) => (
                             <div key={i} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/5">
@@ -274,7 +274,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* WHY CHOOSE US */}
-                <section className="pt-24 bg-white">
+                <section className="pt-12 lg:pt-24 bg-white">
                     <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-16 mb-20">
                         <div className="flex-1 relative aspect-[4/3] lg:aspect-auto lg:h-[450px]">
                             <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] rotate-2 z-0" />
@@ -304,7 +304,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* ZIP CODES & NEARBY */}
-                <section className="py-24 bg-slate-50/50">
+                <section className="py-12 lg:py-24 bg-slate-50/50">
                     <div className="container mx-auto px-4">
                         <div className="text-center max-w-3xl mx-auto mb-12">
                             <h3 className="text-3xl font-extrabold text-slate-900 mb-6">Popular ZIP Codes We Serve</h3>
@@ -332,7 +332,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                 </section>
 
                 {/* FAQ */}
-                <section className="py-20 bg-white">
+                <section className="py-12 lg:py-20 bg-white">
                     <div className="container mx-auto px-4 max-w-4xl">
                         <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">
                             Frequently Asked Questions in {cityName}, {state}

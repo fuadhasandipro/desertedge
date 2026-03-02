@@ -12,7 +12,7 @@ interface Props {
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: Props) {
     const { city } = await params;
-    const cityData = getCityBySlug(city);
+    const cityData = await getCityBySlug(city);
     if (!cityData) return { title: "About Us" };
     const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
     const canonicalBase = `https://${cityData.slug}.${rootDomain}/about`;
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CityAboutPage({ params }: Props) {
     const { city } = await params;
-    const cityData = getCityBySlug(city);
+    const cityData = await getCityBySlug(city);
 
     if (!cityData) notFound();
 

@@ -11,7 +11,7 @@ interface Props {
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: Props) {
     const { city } = await params;
-    const cityData = getCityBySlug(city);
+    const cityData = await getCityBySlug(city);
 
     if (!cityData) return { title: "Plumbing Services Near Me" };
 
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ServicesPage({ params }: Props) {
     const { city } = await params;
-    const cityData = getCityBySlug(city);
+    const cityData = await getCityBySlug(city);
 
     if (!cityData) {
         notFound();

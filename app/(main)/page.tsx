@@ -188,10 +188,8 @@ export const services = [
   },
 ];
 
-const states = getAllStates()
-const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
-
-export default function Home() {
+export default async function Home() {
+  const states = await getAllStates();
   return (
     <div className="flex flex-col min-h-screen font-sans">
       {/* 1. HERO SECTION */}
@@ -216,7 +214,7 @@ export default function Home() {
                 <span>24/7 Emergency Response Available</span>
               </div>
 
-              <h1 className="text-4xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-md">
+              <h1 className="text-3xl md:text-5xl lg:text-7xl font-extrabold text-white mb-4 lg:mb-6 leading-tight drop-shadow-md">
                 Trusted <span className="text-brand-200">Plumbing Experts</span> <br />in the USA
               </h1>
 
@@ -274,7 +272,7 @@ export default function Home() {
 
 
       {/* 3. SERVICES GRID */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-12 lg:py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-accent-600 font-bold uppercase tracking-widest mb-3">What We Do</p>
@@ -296,12 +294,12 @@ export default function Home() {
       </section>
 
       {/* 4. COMMON ISSUES */}
-      <section className="py-24 bg-white">
+      <section className="py-12 lg:py-24 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Serving Plumbing Service services Nation Wide</h2>
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4">
             {states.map((state, i) => (
-              <Link href={`https://${state.state}.${rootDomain}`} key={i} title={`Plumbing services in ${state.state_name}`}>
+              <Link href={`https://${state.state}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000"}`} key={i} title={`Plumbing services in ${state.state_name}`}>
                 <div
                   className="group bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center text-center"
                 >

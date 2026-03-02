@@ -12,8 +12,6 @@ export default function NotFound() {
     return (
         <div className="flex min-h-screen flex-col font-sans bg-slate-50">
             {/* 1. Inherit your standard navigation */}
-            <Header showLocations={false} />
-
             {/* 2. Custom Plumber-Themed 404 Content */}
             <main className="flex-1 flex flex-col items-center justify-center py-24 px-6 relative overflow-hidden">
 
@@ -45,7 +43,7 @@ export default function NotFound() {
                     {/* 3. Call to Actions (Back Home & Emergency Call) */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
                         <GlowingButton
-                            href={`https://${ROOT_DOMAIN}`}
+                            href={`/`}
                             text="Back to Homepage"
                             variant="primary"
                             icon="arrow"

@@ -17,7 +17,7 @@ export async function GET(
     const timestamp = getCurrentTimestamp();
 
     // 1. Fetch cities belonging specifically to THIS state (e.g., 'tx')
-    const cities = getCitiesForState(state.toLowerCase());
+    const cities = await getCitiesForState(state.toLowerCase());
 
     if (!cities || cities.length === 0) {
         return new Response("Not Found", { status: 404 });

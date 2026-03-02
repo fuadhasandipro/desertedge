@@ -21,9 +21,9 @@ export default async function StatePage({
     params: Promise<{ state: string }>;
 }) {
     const { state } = await params;
-    const cities = getCitiesForState(state);
+    const cities = await getCitiesForState(state);
 
-    if (!cities.length) notFound();
+    if (!cities || !cities.length) notFound();
 
     const stateName = cities[0].state_name;
 
@@ -216,7 +216,7 @@ export default async function StatePage({
                             <MapPin className="w-4 h-4" /> <span>Top-Rated in {stateName}</span>
                         </div>
                         {/* SEO OPTIMIZED H1 */}
-                        <h1 className="text-4xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+                        <h1 className="text-3xl md:text-4xl lg:text-6xl font-extrabold text-white mb-4 lg:mb-6 leading-tight">
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700">
                                 Emergency Plumbing Services<br />
                             </span>
@@ -245,7 +245,7 @@ export default async function StatePage({
                 </section>
 
                 {/* SERVICES SECTION */}
-                <section className="py-16 md:py-24 bg-white">
+                <section className="py-12 md:py-24 bg-white">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center max-w-2xl mx-auto mb-16">
                             <p className="text-blue-600 font-bold uppercase tracking-wider mb-2">
@@ -271,7 +271,7 @@ export default async function StatePage({
                 </section>
 
                 {/* CITIES WE SERVE SECTION */}
-                <section className="py-16 md:py-24 bg-slate-50">
+                <section className="py-12 md:py-24 bg-slate-50">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-12">
                             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -283,7 +283,7 @@ export default async function StatePage({
                         </div>
 
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
                             {cities.map((city) => (
                                 <Link
                                     key={city.city}

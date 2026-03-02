@@ -24,7 +24,7 @@ export async function GET(
   const { city } = await params;
   const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-  const cityData = getCityBySlug(city);
+  const cityData = await getCityBySlug(city);
   if (!cityData) return new Response("Not Found", { status: 404 });
 
   const base = `https://${city}.${ROOT_DOMAIN}`;

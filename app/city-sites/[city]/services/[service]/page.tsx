@@ -92,8 +92,8 @@ interface CityData {
 
 import { getCityBySlug } from "@/lib/city-data";
 
-function getCityData(slug: string): CityData | null {
-    return getCityBySlug(slug) as unknown as CityData | null;
+async function getCityData(slug: string): Promise<CityData | null> {
+    return await getCityBySlug(slug) as unknown as CityData | null;
 }
 
 export const revalidate = 86400; // Cache for 24 hours
@@ -108,7 +108,7 @@ export async function generateStaticParams() {
 // ─── SEO OPTIMIZED METADATA ───────────────────────────────────────────────────
 export async function generateMetadata({ params }: { params: Promise<{ city: string; service: string }> }): Promise<Metadata> {
     const { city, service } = await params;
-    const cityData = getCityData(city);
+    const cityData = await getCityData(city);
     const serviceData = cityData?.services.find(s => s.service_id === service);
 
     if (!serviceData || !cityData) return { title: "Service Not Found" };
@@ -135,7 +135,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 export default async function SingleServicePage({ params }: { params: Promise<{ city: string; service: string }> }) {
     const { city, service } = await params;
 
-    const cityData = getCityData(city);
+    const cityData = await getCityData(city);
     if (!cityData) notFound();
 
     const serviceData = cityData.services.find(s => s.service_id === service);

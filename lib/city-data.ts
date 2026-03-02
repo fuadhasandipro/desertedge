@@ -1,172 +1,82 @@
-import fs from "fs";
-import path from "path";
-import AdmZip from "adm-zip";
+// lib/city-data.ts
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-// We check multiple locations for data.zip because Netlify serverless functions 
-// and Next.js NextServer have varying process.cwd() and __dirname resolutions.
-let zipCache: AdmZip | null = null;
-function getZip() {
-    if (!zipCache) {
-        const potentialPaths = [
-            path.resolve(process.cwd(), "data.zip"), // Local Dev & Standard Netlify Root
-            path.resolve(process.cwd(), ".next/server", "data.zip"), // Next.js specific bundle root
-            path.resolve(__dirname, "../../../../data.zip"), // Fallback relative to this file
-            path.resolve("/var/task", "data.zip") // Common AWS / Netlify Lambda absolute path
-        ];
+// Base URL for fetching our generated static JSON assets.
+// During build/dev, we can fetch from localhost. In production, we fetch from the real domain.
+const getBaseUrl = () => {
+    if (typeof window !== "undefined") return ""; // Browser should use relative
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+    // When running inside Cloudflare Pages locally via Wrangler
+    if (process.env.CF_PAGES_URL) return process.env.CF_PAGES_URL;
+    return process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : `https://${ROOT_DOMAIN}`;
+};
 
-        let foundPath: string | null = null;
-        for (const p of potentialPaths) {
-            if (fs.existsSync(p)) {
-                foundPath = p;
-                break;
-            }
+// Fallback for Next.js generic static build phase where localhost:3000 is offline
+async function fetchOrReadLocal(urlPath: string, localPath: string): Promise<any> {
+    const url = `${getBaseUrl()}${urlPath}`;
+    try {
+        console.log(`[Edge City] Fetching: ${url}`);
+        const res = await fetch(url, { next: { revalidate: 86400 } });
+        if (!res.ok) throw new Error("HTTP Fetch failed");
+        return await res.json();
+    } catch (e) {
+        // Fallback for Build Time Only
+        console.warn(`[Edge City] Fetch failed for ${url}, falling back to local file read for build phase...`);
+        try {
+            // we use dynamic import so it doesn't break middleware/edge runtime immediately
+            const fs = await import('fs');
+            const path = await import('path');
+            const fullPath = path.join(process.cwd(), 'public', localPath);
+            const raw = fs.readFileSync(fullPath, 'utf-8');
+            return JSON.parse(raw);
+        } catch (fsErr) {
+            console.error(`Local read fallback also failed for ${localPath}`, fsErr);
+            return null;
         }
-
-        if (!foundPath) {
-            console.error("[zip-cache] CRITICAL ERROR: Could not find data.zip in any expected location.");
-            // We'll just default to process.cwd() so adm-zip throws its own error to the stream
-            foundPath = path.resolve(process.cwd(), "data.zip");
-        }
-
-        console.log("[zip-cache] Loading zip from:", foundPath);
-        zipCache = new AdmZip(foundPath);
     }
-    return zipCache;
 }
 
-export interface NearbyCity {
-    name: string;
-    slug: string;
-    state: string;
-}
-
-export interface Service {
-    service_id: string;
-    service_title: string;
-    hero: { subheadline: string };
-}
-
-export interface StateSummary {
-    state: string;       // short code e.g. "CA"
-    state_name: string;  // full name e.g. "California"
-    count: number;       // number of cities in that state
-}
+export interface NearbyCity { name: string; slug: string; state: string; }
+export interface Service { service_id: string; service_title: string; hero: { subheadline: string }; }
+export interface StateSummary { state: string; state_name: string; count: number; }
 
 export interface CityData {
-    city: string;
-    state: string;           // short e.g. "CA"
-    state_name: string;      // full  e.g. "California"
-    county_name: string;
-    lat: number;
-    lng: number;
-    slug: string;            // e.g. "american-canyon-ca"
-    phone: string;
+    city: string; state: string; state_name: string; county_name: string;
+    lat: number; lng: number; slug: string; phone: string;
     meta: { title: string; description: string };
-    hero: {
-        badge_text: string;
-        h1_highlight: string;
-        h1_main: string;
-        subheadline: string;
-        cta_label: string;
-        hero_image_alt: string;
-    };
+    hero: { badge_text: string; h1_highlight: string; h1_main: string; subheadline: string; cta_label: string; hero_image_alt: string; };
     trust_bar: string[];
-    about: {
-        badge: string;
-        h2: string;
-        body_paragraphs: string[];
-        residential_box: { title: string; description: string };
-        commercial_box: { title: string; description: string };
-        badge_stat: string;
-        badge_label: string;
-    };
-    why_choose_us: {
-        badge: string;
-        h2: string;
-        body: string;
-        points: { label: string; text: string }[];
-    };
+    about: { badge: string; h2: string; body_paragraphs: string[]; residential_box: { title: string; description: string }; commercial_box: { title: string; description: string }; badge_stat: string; badge_label: string; };
+    why_choose_us: { badge: string; h2: string; body: string; points: { label: string; text: string }[]; };
     stats: { val: string; label: string }[];
     services_section: { h2_prefix: string; intro: string };
     zip_codes: string[];
     nearby_cities: NearbyCity[];
     faqs: { q: string; a: string }[];
     service_area_text: string;
-    reviews: {
-        id: number;
-        source: string;
-        author: string;
-        date: string;
-        text: string;
-        rating: number;
-    }[];
+    reviews: { id: number; source: string; author: string; date: string; text: string; rating: number; }[];
     services: Service[];
 }
 
-// ── Single city by slug ────────────────────────────────────────────────────────
-export function getCityBySlug(slug: string): CityData | null {
-    try {
-        const zip = getZip();
-        // The zip-data script adds the contents of data/cities to a folder named "cities"
-        // So the path inside the zip is cities/american-canyon-ca.json
-        const entryName = `cities/${slug.toLowerCase()}.json`;
-        const raw = zip.readAsText(entryName);
-        if (!raw) return null;
-        return JSON.parse(raw) as CityData;
-    } catch {
-        return null;
-    }
+// ── Single city by slug (ASYNC) ───────────────────────────────────────────────
+export async function getCityBySlug(slug: string): Promise<CityData | null> {
+    return await fetchOrReadLocal(`/data/cities/${slug.toLowerCase()}.json`, `/data/cities/${slug.toLowerCase()}.json`) as CityData | null;
+}
+
+// ── All unique states present in your data (ASYNC) ───────────────────────────
+export async function getAllStates(): Promise<StateSummary[]> {
+    return await fetchOrReadLocal(`/data/states.json`, `/data/states.json`) as StateSummary[] || [];
+}
+
+// ── Cities for one state (ASYNC) ──────────────────────────────────────────────
+export async function getCitiesForState(stateShort: string): Promise<CityData[]> {
+    return await fetchOrReadLocal(`/data/state-cities/${stateShort.toUpperCase()}.json`, `/data/state-cities/${stateShort.toUpperCase()}.json`) as CityData[] || [];
 }
 
 // ── All city slugs (for generateStaticParams) ─────────────────────────────────
+// Note: We return empty arrays for static gen since dynamicParams = true covers it.
 export function getAllCitySlugs(): string[] {
-    try {
-        const zip = getZip();
-        return zip.getEntries()
-            .filter((e: AdmZip.IZipEntry) => e.entryName.startsWith("cities/") && e.entryName.endsWith(".json"))
-            .map((e: AdmZip.IZipEntry) => {
-                const parts = e.entryName.split("/");
-                const filename = parts[parts.length - 1];
-                return filename.replace(".json", "");
-            });
-    } catch {
-        return [];
-    }
-}
-
-// ── All cities (lightweight — reads every file, use sparingly) ────────────────
-export function getAllCities(): CityData[] {
-    return getAllCitySlugs()
-        .map((slug) => getCityBySlug(slug))
-        .filter(Boolean) as CityData[];
-}
-
-// ── Cities grouped by state short code ────────────────────────────────────────
-export function getCitiesByState(): Record<string, CityData[]> {
-    const all = getAllCities();
-    return all.reduce<Record<string, CityData[]>>((acc, city) => {
-        const s = city.state.toUpperCase();
-        if (!acc[s]) acc[s] = [];
-        acc[s].push(city);
-        return acc;
-    }, {});
-}
-
-// ── All unique states present in your data ────────────────────────────────────
-export function getAllStates(): StateSummary[] {
-    const grouped = getCitiesByState();
-    return Object.entries(grouped)
-        .map(([state, cities]) => ({
-            state,
-            state_name: cities[0].state_name,
-            count: cities.length,
-        }))
-        .sort((a, b) => a.state_name.localeCompare(b.state_name));
-}
-
-// ── Cities for one state ──────────────────────────────────────────────────────
-export function getCitiesForState(stateShort: string): CityData[] {
-    return getAllCities().filter(
-        (c) => c.state.toUpperCase() === stateShort.toUpperCase()
-    );
+    return [];
 }

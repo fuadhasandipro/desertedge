@@ -120,7 +120,7 @@ const nextConfig: NextConfig = {
   },
 
   // ── 7. OUTPUT ──────────────────────────────────────────────────────────────
-  // If deploying to a Node server (not Vercel) or Docker:
+  // We use Cloudflare Pages Edge rendering, NOT export
 
   // ── 8. POWERED BY HEADER ───────────────────────────────────────────────────
   // Don't advertise you're using Next.js (minor security hardening)

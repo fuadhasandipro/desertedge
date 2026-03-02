@@ -25,7 +25,7 @@ export async function GET(
 ) {
     const { state } = await params;
     const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
-    const cities = getCitiesForState(state);
+    const cities = await getCitiesForState(state);
 
     if (!cities.length) {
         return new Response("Not Found", { status: 404 });
