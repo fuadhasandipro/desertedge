@@ -2,12 +2,11 @@ import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 
-// Obfuscate the string so Next.js file-tracer doesn't statically analyze the data folder
+// We directly reference "data.zip" so Next.js file-tracer natively includes it in the serverless bundle
 let zipCache: AdmZip | null = null;
 function getZip() {
     if (!zipCache) {
-        const zipName = "data" + ".zip";
-        const zipPath = path.join(process.cwd(), zipName);
+        const zipPath = path.join(process.cwd(), "data.zip");
         zipCache = new AdmZip(zipPath);
     }
     return zipCache;
