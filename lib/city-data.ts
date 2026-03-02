@@ -2,15 +2,34 @@ import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 
-// We explicitly resolve data.zip so it works inside Netlify's Lambda environment
+// We check multiple locations for data.zip because Netlify serverless functions 
+// and Next.js NextServer have varying process.cwd() and __dirname resolutions.
 let zipCache: AdmZip | null = null;
 function getZip() {
     if (!zipCache) {
-        // In Next.js serverless functions, process.cwd() is usually the right root
-        // But we wrap it in path.resolve to be safe.
-        const zipPath = path.resolve(process.cwd(), "data.zip");
-        console.log("[zip-cache] Loading zip from:", zipPath);
-        zipCache = new AdmZip(zipPath);
+        const potentialPaths = [
+            path.resolve(process.cwd(), "data.zip"), // Local Dev & Standard Netlify Root
+            path.resolve(process.cwd(), ".next/server", "data.zip"), // Next.js specific bundle root
+            path.resolve(__dirname, "../../../../data.zip"), // Fallback relative to this file
+            path.resolve("/var/task", "data.zip") // Common AWS / Netlify Lambda absolute path
+        ];
+
+        let foundPath: string | null = null;
+        for (const p of potentialPaths) {
+            if (fs.existsSync(p)) {
+                foundPath = p;
+                break;
+            }
+        }
+
+        if (!foundPath) {
+            console.error("[zip-cache] CRITICAL ERROR: Could not find data.zip in any expected location.");
+            // We'll just default to process.cwd() so adm-zip throws its own error to the stream
+            foundPath = path.resolve(process.cwd(), "data.zip");
+        }
+
+        console.log("[zip-cache] Loading zip from:", foundPath);
+        zipCache = new AdmZip(foundPath);
     }
     return zipCache;
 }
