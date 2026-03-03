@@ -1,13 +1,11 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+// app/(main)/layout.tsx
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-export default function MainLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex min-h-screen flex-col font-sans">
+            <Header showLocations={true} />
             <main className="flex-1">{children}</main>
             <Footer />
         </div>

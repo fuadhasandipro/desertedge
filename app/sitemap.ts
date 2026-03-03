@@ -1,16 +1,6 @@
-// app/sitemap.ts
-// Served at: rootdomain.com/sitemap.xml
-// Lists: root homepage + every state subdomain homepage + state sitemap.xml reference
-
+// app/sitemap.ts — Root domain sitemap: homepage + all state subdomain entries
 import type { MetadataRoute } from "next";
-
-const US_STATES = [
-    "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga",
-    "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
-    "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
-    "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
-    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
-];
+import { US_STATES_LC } from "@/lib/constants";
 
 function randomRecentDate(): Date {
     const now = Date.now();
@@ -19,37 +9,33 @@ function randomRecentDate(): Date {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const ROOT_DOMAIN =
-        process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+    const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-    const entries: MetadataRoute.Sitemap = [];
-
-    // 1. Root homepage — priority 1.0
-    entries.push({
-        url: `https://${ROOT_DOMAIN}/`,
-        lastModified: randomRecentDate(),
-        changeFrequency: "weekly",
-        priority: 1.0,
+    const stateEntries = US_STATES_LC.flatMap((state) => {
+        const date = randomRecentDate();
+        return [
+            {
+                url: `https://${state}.${ROOT_DOMAIN}/`,
+                lastModified: date,
+                changeFrequency: "weekly" as const,
+                priority: 0.8,
+            },
+            {
+                url: `https://${state}.${ROOT_DOMAIN}/sitemap.xml`,
+                lastModified: date,
+                changeFrequency: "weekly" as const,
+                priority: 0.6,
+            },
+        ];
     });
 
-    // 2. Each state: homepage (0.8) + sitemap.xml reference (0.6)
-    for (const state of US_STATES) {
-        const stateDate = randomRecentDate();
-
-        entries.push({
-            url: `https://${state}.${ROOT_DOMAIN}/`,
-            lastModified: stateDate,
+    return [
+        {
+            url: `https://${ROOT_DOMAIN}/`,
+            lastModified: randomRecentDate(),
             changeFrequency: "weekly",
-            priority: 0.8,
-        });
-
-        entries.push({
-            url: `https://${state}.${ROOT_DOMAIN}/sitemap.xml`,
-            lastModified: stateDate,
-            changeFrequency: "weekly",
-            priority: 0.6,
-        });
-    }
-
-    return entries;
+            priority: 1.0,
+        },
+        ...stateEntries,
+    ];
 }

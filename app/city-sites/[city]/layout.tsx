@@ -65,7 +65,6 @@ export default async function CityLayout({
         <div className="flex flex-col min-h-screen">
             <Header
                 city={cityData.city}
-                phone={cityData.phone}
                 showLocations={false}
             />
             <main className="flex-grow">

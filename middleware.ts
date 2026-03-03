@@ -1,5 +1,6 @@
 // middleware.ts
 import { NextRequest, NextResponse } from "next/server";
+import { US_STATES_SET } from "@/lib/constants";
 
 export const config = {
     matcher: [
@@ -7,96 +8,57 @@ export const config = {
     ],
 };
 
-// All 50 US state abbreviations (lowercase) to distinguish
-// az.domain.com (state) vs american-canyon-ca.domain.com (city)
-const US_STATES = new Set([
-    "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga",
-    "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
-    "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
-    "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
-    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
-]);
-
 export default function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
-    const hostname = req.headers.get("host") || "";
+    const hostname = req.headers.get("host") ?? "";
     const currentPath = url.pathname;
 
     const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
     const hostWithoutPort = hostname.replace(/:.*$/, "");
     const rootWithoutPort = ROOT_DOMAIN.replace(/:.*$/, "");
 
-    // ── 1. Redirect direct access to specific subdomains ──────────────────────
-    if (
-        currentPath.startsWith("/city-sites") ||
-        currentPath.startsWith("/state-sites")
-    ) {
-        // Break down the path: ["", "city-sites", "dallas-tx", "about"]
+    // ── 1. Redirect /city-sites/** and /state-sites/** to proper subdomain ────
+    if (currentPath.startsWith("/city-sites") || currentPath.startsWith("/state-sites")) {
         const pathParts = currentPath.split("/").filter(Boolean);
-        const subSlug = pathParts[1]; // e.g., "dallas-tx"
-        const remainingPath = pathParts.slice(2).join("/"); // e.g., "about"
+        const subSlug = pathParts[1]; // e.g. "dallas-tx"
+        const remainingPath = pathParts.slice(2).join("/");
 
         if (subSlug) {
-            // Construct the proper subdomain URL
             const redirectUrl = req.nextUrl.clone();
             redirectUrl.hostname = `${subSlug}.${rootWithoutPort}`;
             redirectUrl.pathname = `/${remainingPath}`;
-
-            // 308 is a Permanent Redirect (preserves the original HTTP method)
             return NextResponse.redirect(redirectUrl, 308);
-        } else {
-            // If they access the exact folder /city-sites/ with no slug, fallback to 404
-            url.pathname = "/404";
-            return NextResponse.rewrite(url, { status: 404 });
         }
+        url.pathname = "/404";
+        return NextResponse.rewrite(url, { status: 404 });
     }
 
     // ── 2. Detect subdomain ───────────────────────────────────────────────────
     let subdomain: string | null = null;
 
     if (hostWithoutPort.endsWith(`.${rootWithoutPort}`)) {
-        subdomain = hostWithoutPort.slice(
-            0,
-            hostWithoutPort.length - rootWithoutPort.length - 1
-        );
+        subdomain = hostWithoutPort.slice(0, hostWithoutPort.length - rootWithoutPort.length - 1);
     }
 
+    // ── 3. Redirect www → root ────────────────────────────────────────────────
     if (subdomain === "www") {
         const redirectUrl = req.nextUrl.clone();
         redirectUrl.hostname = rootWithoutPort;
         return NextResponse.redirect(redirectUrl, 308);
     }
 
-    // ── 3. Root domain — serve normally ──────────────────────────────────────
-    if (!subdomain) {
-        return NextResponse.next();
-    }
+    // ── 4. Root domain — serve normally ──────────────────────────────────────
+    if (!subdomain) return NextResponse.next();
 
     const sub = subdomain.toLowerCase();
 
-    // ── 4. State subdomain ────────────────────────────────────────────────────
-    // Exactly 2 chars + matches a real US state code
-    // az.domain.com/          → /state-sites/az
-    // az.domain.com/cities    → /state-sites/az/cities
-    if (sub.length === 2 && US_STATES.has(sub)) {
-        const rewritePath =
-            currentPath === "/"
-                ? `/state-sites/${sub}`
-                : `/state-sites/${sub}${currentPath}`;
-
-        url.pathname = rewritePath;
+    // ── 5. State subdomain (2-letter code matching a real US state) ───────────
+    if (sub.length === 2 && US_STATES_SET.has(sub)) {
+        url.pathname = currentPath === "/" ? `/state-sites/${sub}` : `/state-sites/${sub}${currentPath}`;
         return NextResponse.rewrite(url);
     }
 
-    // ── 5. City subdomain ─────────────────────────────────────────────────────
-    // american-canyon-ca.domain.com/ → /city-sites/american-canyon-ca
-    // american-canyon-ca.domain.com/services/leak-repair
-    //                                → /city-sites/american-canyon-ca/services/leak-repair
-    const rewritePath =
-        currentPath === "/"
-            ? `/city-sites/${sub}`
-            : `/city-sites/${sub}${currentPath}`;
-
-    url.pathname = rewritePath;
+    // ── 6. City subdomain ─────────────────────────────────────────────────────
+    url.pathname = currentPath === "/" ? `/city-sites/${sub}` : `/city-sites/${sub}${currentPath}`;
     return NextResponse.rewrite(url);
 }
