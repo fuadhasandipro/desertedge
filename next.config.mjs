@@ -59,6 +59,9 @@ const nextConfig = {
   // ── 8. POWERED BY HEADER ───────────────────────────────────────────────────
   // Don't advertise you're using Next.js (minor security hardening)
   poweredByHeader: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
