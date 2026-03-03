@@ -81,21 +81,11 @@ export default function RootLayout({
 
                 {/* MarketCall Call Tracking — substitutes tel: links with campaign tracking numbers */}
                 <Script id="marketcall-tracking" strategy="afterInteractive">
-                    {`
-                    (function (w,d,s,o,f,js,fjs) {
-                        w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
-                        js = d.createElement(s); fjs = d.getElementsByTagName(s)[0];
-                        js.id = o; js.src = f; js.async = 1;
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }(window, document, 'script', 'mcc', 'https://marketcall.com/js/mc-calltracking.js'));
+                    {`(function (w,d,s,o,f,js,fjs) { w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) }; js = d.createElement(s), fjs = d.getElementsByTagName(s)[0]; js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);}(window, document, 'script', 'mcc', 'https://marketcall.com/js/mc-calltracking.js'));
                     mcc('init', { site: 2886, serviceBaseUrl: '//www.marketcall.com' });
-                    mcc('requestTrackingNumber', {
-                        campaign: "339043",
-                        selector: [{ type: "dom", value: "a[href^='tel:']" }],
-                        mask: "(xxx) xxx-xx-xx",
-                        subid: "{subid}"
-                    });
-                    `}
+                    <!-- Request Tracking Number Code -->
+                    <!-- The code should be located on all pages where the number from the call tracking should be substituted -->
+                    mcc('requestTrackingNumber', {campaign:"339073",selector:[{type:"dom",value:"a[href^='tel:']"}],mask:"(xxx) xxx-xx-xx"}); `}
                 </Script>
             </body>
         </html>
