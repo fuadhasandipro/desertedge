@@ -1,9 +1,9 @@
 // app/city-sites/[city]/layout.tsx
-import { notFound } from 'next/navigation';
-
-import { Metadata } from 'next';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { getCityBySlug } from "@/lib/city-data";
 
 type CityData = {
     city: string;
@@ -19,27 +19,19 @@ type CityData = {
     reviews: { rating: number }[];
 };
 
-import { getCityBySlug } from '@/lib/city-data';
-
-function getCityData(slug: string): CityData | null {
-    return getCityBySlug(slug) as unknown as CityData | null;
-}
-
 export async function generateMetadata({
     params,
 }: {
     params: Promise<{ city: string }>;
 }): Promise<Metadata> {
     const { city } = await params;
-    const cityData = getCityData(city);
-    if (!cityData) return {};
-
-    const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
-    const canonicalBase = `https://${cityData.slug}.${ROOT_DOMAIN}`;
-
-    const data = getCityData(city);
+    // Properly await the async function
+    const data = await getCityBySlug(city) as CityData | null;
 
     if (!data) return { title: "Plumber Near Me" };
+
+    const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+    const canonicalBase = `https://${data.slug}.${ROOT_DOMAIN}`;
 
     return {
         alternates: {
@@ -60,7 +52,9 @@ export default async function CityLayout({
     params: Promise<{ city: string }>;
 }) {
     const { city } = await params;
-    const cityData = getCityData(city);
+
+    // Properly await the async getCityBySlug function
+    const cityData = await getCityBySlug(city) as CityData | null;
 
     if (!cityData) {
         console.error(`[CityLayout] No city JSON found for slug: "${city}".`);
@@ -69,7 +63,6 @@ export default async function CityLayout({
 
     return (
         <div className="flex flex-col min-h-screen">
-
             <Header
                 city={cityData.city}
                 phone={cityData.phone}

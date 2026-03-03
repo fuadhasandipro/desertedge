@@ -1,40 +1,48 @@
 // lib/city-data.ts
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-// Base URL for fetching our generated static JSON assets.
-// During build/dev, we can fetch from localhost. In production, we fetch from the real domain.
-const getBaseUrl = () => {
-    if (typeof window !== "undefined") return ""; // Browser should use relative
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-    // When running inside Cloudflare Pages locally via Wrangler
-    if (process.env.CF_PAGES_URL) return process.env.CF_PAGES_URL;
-    return process.env.NODE_ENV === "development"
-        ? "http://localhost:3000"
-        : `https://${ROOT_DOMAIN}`;
-};
+/**
+ * Determines a reliable base URL for fetching static JSON assets.
+ * 
+ * On Cloudflare Workers/Pages:
+ * - CF_PAGES_URL is only available at BUILD TIME, not at runtime.
+ * - The worker can reach its own domain via Cloudflare internal routing.
+ * - We use https://ROOT_DOMAIN in production, localhost in dev.
+ * 
+ * Static assets in public/ are served via the ASSETS binding, accessible
+ * at https://ROOT_DOMAIN/data/... without leaving the Cloudflare network.
+ */
+function getBaseUrl(): string {
+    if (process.env.NODE_ENV === "development") {
+        return "http://localhost:3000";
+    }
+    // In production (Cloudflare Pages), always use the root domain.
+    // The worker fetches from its own origin — no external round-trip.
+    return `https://${ROOT_DOMAIN}`;
+}
 
-// Fallback for Next.js generic static build phase where localhost:3000 is offline
-async function fetchOrReadLocal(urlPath: string, localPath: string): Promise<any> {
-    const url = `${getBaseUrl()}${urlPath}`;
+/**
+ * Fetches a JSON file from the static assets (public/ directory).
+ * Uses `cache: 'force-cache'` so Cloudflare caches responses at the edge,
+ * avoiding repeated network calls for the same city/state data.
+ */
+async function fetchJson(urlPath: string): Promise<any> {
+    const baseUrl = getBaseUrl();
+    const url = `${baseUrl}${urlPath}`;
     try {
-        console.log(`[Edge City] Fetching: ${url}`);
-        const res = await fetch(url, { next: { revalidate: 86400 } });
-        if (!res.ok) throw new Error("HTTP Fetch failed");
-        return await res.json();
-    } catch (e) {
-        // Fallback for Build Time Only
-        console.warn(`[Edge City] Fetch failed for ${url}, falling back to local file read for build phase...`);
-        try {
-            // we use dynamic import so it doesn't break middleware/edge runtime immediately
-            const fs = await import('fs');
-            const path = await import('path');
-            const fullPath = path.join(process.cwd(), 'public', localPath);
-            const raw = fs.readFileSync(fullPath, 'utf-8');
-            return JSON.parse(raw);
-        } catch (fsErr) {
-            console.error(`Local read fallback also failed for ${localPath}`, fsErr);
+        const res = await fetch(url, {
+            cache: "force-cache",
+            // Next.js ISR hint: revalidate every 24 hours
+            next: { revalidate: 86400 },
+        });
+        if (!res.ok) {
+            console.warn(`[city-data] HTTP ${res.status} for ${url}`);
             return null;
         }
+        return await res.json();
+    } catch (e) {
+        console.warn(`[city-data] Fetch failed for ${url}:`, e);
+        return null;
     }
 }
 
@@ -62,21 +70,23 @@ export interface CityData {
 
 // ── Single city by slug (ASYNC) ───────────────────────────────────────────────
 export async function getCityBySlug(slug: string): Promise<CityData | null> {
-    return await fetchOrReadLocal(`/data/cities/${slug.toLowerCase()}.json`, `/data/cities/${slug.toLowerCase()}.json`) as CityData | null;
+    return fetchJson(`/data/cities/${slug.toLowerCase()}.json`) as Promise<CityData | null>;
 }
 
 // ── All unique states present in your data (ASYNC) ───────────────────────────
 export async function getAllStates(): Promise<StateSummary[]> {
-    return await fetchOrReadLocal(`/data/states.json`, `/data/states.json`) as StateSummary[] || [];
+    const data = await fetchJson(`/data/states.json`);
+    return (data as StateSummary[]) || [];
 }
 
 // ── Cities for one state (ASYNC) ──────────────────────────────────────────────
 export async function getCitiesForState(stateShort: string): Promise<CityData[]> {
-    return await fetchOrReadLocal(`/data/state-cities/${stateShort.toUpperCase()}.json`, `/data/state-cities/${stateShort.toUpperCase()}.json`) as CityData[] || [];
+    const data = await fetchJson(`/data/state-cities/${stateShort.toUpperCase()}.json`);
+    return (data as CityData[]) || [];
 }
 
 // ── All city slugs (for generateStaticParams) ─────────────────────────────────
-// Note: We return empty arrays for static gen since dynamicParams = true covers it.
+// Returns empty array — dynamicParams = true handles on-demand rendering.
 export function getAllCitySlugs(): string[] {
     return [];
 }
