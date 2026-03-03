@@ -1,10 +1,10 @@
 // lib/constants.ts — App-wide constants: phone, domain, US state lists
 
 /** Formatted display phone number */
-export const PHONE_NUMBER = "(123) 456-7890";
+export const PHONE_NUMBER = "(844) 984-30-80";
 
 /** tel: link phone number */
-export const PHONE_NUMBER_TEL = "tel:+18336090936";
+export const PHONE_NUMBER_TEL = "tel:+18449843080";
 
 /** Contact email */
 export const CONTACT_EMAIL = "info@desertedgeplumbing.com";

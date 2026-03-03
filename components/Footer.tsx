@@ -77,6 +77,21 @@ export default function SiteFooter({ stateName = "USA" }: FooterProps) {
                     </div>
                 </div>
 
+                {/* Legal Disclaimer */}
+                <div className="border-t border-slate-800 pt-8 mb-6">
+                    <div className="bg-slate-800/50 border border-slate-700 rounded-xl px-6 py-4 flex gap-3 items-start">
+                        <span className="shrink-0 text-base mt-0.5">ℹ️</span>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                            {locationPros} is a free service to assist homeowners in connecting with local service
+                            providers. All contractors/providers are independent and {locationPros} does not warrant
+                            or guarantee any work performed. It is the responsibility of the homeowner to verify
+                            that the hired contractor furnishes the necessary license and insurance required for the
+                            work being performed. All persons depicted in a photo or video are actors or models and
+                            not contractors listed on {locationPros}.
+                        </p>
+                    </div>
+                </div>
+
                 {/* Bottom Bar */}
                 <div className="border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
                     <p>
