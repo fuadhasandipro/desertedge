@@ -15,7 +15,7 @@ const SERVICE_TEMPLATES: ServiceItem[] = [
     { title: "Sump Pump Services", description: "Keep basements dry year-round." },
     { title: "Water Softener Installation", description: "Eliminate hard-water scale and stains." },
     { title: "Gas Line Services", description: "Safe gas pipe installs and leak repairs." },
-    { title: "Commercial Plumbing Maintenance", description: "Preventive care for businesses and facilities." },
+    // { title: "Commercial Plumbing Maintenance", description: "Preventive care for businesses and facilities." },
     { title: "24/7 Service", description: "Plumbing support around the clock." },
     { title: "Leak Detection", description: "Pinpoint hidden water leaks." },
     { title: "Burst Pipe Repair", description: "Stop damaging pipe ruptures fast." },
@@ -49,8 +49,8 @@ const SERVICE_TEMPLATES: ServiceItem[] = [
     { title: "Remodel Plumbing", description: "Plumbing relocations for renovations." },
     { title: "Water Filtration Systems", description: "Whole-house or point-of-use filtration." },
     { title: "Boiler Services", description: "Boiler repair, replacement, and tuning." },
-    { title: "Commercial Plumbing", description: "Plumbing solutions for businesses." },
-    { title: "Grease Trap Cleaning", description: "Keep commercial kitchens code-compliant." },
+    // { title: "Commercial Plumbing", description: "Plumbing solutions for businesses." },
+    // { title: "Grease Trap Cleaning", description: "Keep commercial kitchens code-compliant." },
 ];
 
 /**
