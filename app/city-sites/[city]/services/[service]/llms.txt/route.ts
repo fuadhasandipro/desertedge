@@ -9,6 +9,7 @@
 import { NextResponse } from "next/server";
 import { getCityBySlug } from "@/lib/city-data";
 import { SERVICE_LLMS_DATA } from "@/lib/service-llms-data";
+import { PHONE_NUMBER } from "@/lib/constants";
 
 const ROOT_DOMAIN =
     process.env.NEXT_PUBLIC_ROOT_DOMAIN || "desertedgeplumbing.com";
@@ -87,7 +88,7 @@ export async function GET(
 
 ## Service: ${serviceData.title}
 ## Location: ${cityData.city}, ${cityData.state} (${cityData.state_name})
-## Phone: ${cityData.phone}
+## Phone: ${PHONE_NUMBER}
 ## Page URL: ${thisPageUrl}
 
 ${urgencyLabel}
@@ -118,7 +119,7 @@ ${allCityServices}
 ## Key Facts
 
 - **Free for homeowners** — no cost to call
-- **Phone for ${cityData.city}**: ${cityData.phone}
+- **Phone for ${cityData.city}**: ${PHONE_NUMBER}
 - **ZIP codes served**: ${cityData.zip_codes.slice(0, 8).join(", ")}${cityData.zip_codes.length > 8 ? ` and ${cityData.zip_codes.length - 8} more` : ""}
 - **Referral service** — licensed independent contractors perform the work
 - **Available**: 24/7 including weekends and holidays

@@ -14,7 +14,7 @@
  * This script chunks them automatically.
  */
 
-const INDEXNOW_KEY = "YOUR-KEY-HERE"; // ← paste your key here
+const INDEXNOW_KEY = "c2d47f8abcf243ff9e1548fb04c6f597"; // ← paste your key here
 const ROOT_DOMAIN = "desertedgeplumbing.com";
 
 // All 50 states with city counts from your states.json
