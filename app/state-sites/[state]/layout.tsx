@@ -1,6 +1,6 @@
 // app/state-sites/[state]/layout.tsx
 import { notFound } from "next/navigation";
-import { getCitiesForState } from "@/lib/city-data";
+import { getCitiesForState, getStateName } from "@/lib/city-data";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,11 +16,13 @@ export async function generateMetadata({
     params: Promise<{ state: string }>;
 }): Promise<Metadata> {
     const { state } = await params;
-    const cities = await getCitiesForState(state);
+    const [cities, stateName] = await Promise.all([
+        getCitiesForState(state),
+        getStateName(state),
+    ]);
 
     if (!cities.length) return {};
 
-    const stateName = cities[0].state_name;
     const stateShort = state.toUpperCase();
     const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
     const stateUrl = `https://${stateShort.toLowerCase()}.${ROOT_DOMAIN}`;
@@ -70,11 +72,13 @@ export async function generateMetadata({
 
 export default async function StateLayout({ children, params }: Props) {
     const { state } = await params;
-    const cities = await getCitiesForState(state);
+    const [cities, stateName] = await Promise.all([
+        getCitiesForState(state),
+        getStateName(state),
+    ]);
 
     if (!cities.length) notFound();
 
-    const stateName = cities[0].state_name;
     const stateShort = state.toUpperCase();
     const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 

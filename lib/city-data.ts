@@ -79,6 +79,15 @@ export async function getAllStates(): Promise<StateSummary[]> {
     return (data as StateSummary[]) || [];
 }
 
+// ── Lookup full state name from abbreviation (e.g. "AZ" → "Arizona") ─────────
+export async function getStateName(stateShort: string): Promise<string> {
+    const states = await getAllStates();
+    const match = states.find(
+        (s) => s.state.toUpperCase() === stateShort.toUpperCase()
+    );
+    return match?.state_name ?? stateShort.toUpperCase();
+}
+
 // ── Cities for one state (ASYNC) ──────────────────────────────────────────────
 export async function getCitiesForState(stateShort: string): Promise<CityData[]> {
     const data = await fetchJson(`/data/state-cities/${stateShort.toUpperCase()}.json`);

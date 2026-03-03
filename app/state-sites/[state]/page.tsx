@@ -5,8 +5,11 @@ import { notFound } from "next/navigation";
 import { CheckCircle2, ShieldCheck, Star, Clock, MapPin } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
-import { getCitiesForState } from "@/lib/city-data";
+import { getCitiesForState, getStateName } from "@/lib/city-data";
 import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
+
+// State-cities JSON shape: {city, slug, state, zip_codes} — no state_name
+interface CityEntry { city: string; slug: string; state: string; zip_codes: string[]; }
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -21,11 +24,13 @@ export default async function StatePage({
     params: Promise<{ state: string }>;
 }) {
     const { state } = await params;
-    const cities = await getCitiesForState(state);
+    // Fetch cities and state name in parallel
+    const [cities, stateName] = await Promise.all([
+        getCitiesForState(state) as Promise<CityEntry[]>,
+        getStateName(state),
+    ]);
 
     if (!cities || !cities.length) notFound();
-
-    const stateName = cities[0].state_name;
 
     // Dynamic services array with state name appended to each
     const services = [
