@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         title: "Emergency Plumber Near Me – Licensed & Insured | 24/7 USA Plumbing",
         description:
             "Fast, affordable plumbing services across the USA. Available 24/7 for emergencies. Licensed, insured, and background-checked pros.",
-        url: "https://yoursite.com",
+        url: "https://desertedgeplumbing.com",
         siteName: "Plumbing Service USA",
         images: [
             {
