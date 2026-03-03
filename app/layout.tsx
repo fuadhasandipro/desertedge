@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -77,6 +78,25 @@ export default function RootLayout({
                     shadow="0 0 10px #2563eb,0 0 5px #2563eb"
                 />
                 {children}
+
+                {/* MarketCall Call Tracking — substitutes tel: links with campaign tracking numbers */}
+                <Script id="marketcall-tracking" strategy="afterInteractive">
+                    {`
+                    (function (w,d,s,o,f,js,fjs) {
+                        w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
+                        js = d.createElement(s); fjs = d.getElementsByTagName(s)[0];
+                        js.id = o; js.src = f; js.async = 1;
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(window, document, 'script', 'mcc', 'https://marketcall.com/js/mc-calltracking.js'));
+                    mcc('init', { site: 2886, serviceBaseUrl: '//www.marketcall.com' });
+                    mcc('requestTrackingNumber', {
+                        campaign: "339043",
+                        selector: [{ type: "dom", value: "a[href^='tel:']" }],
+                        mask: "(xxx) xxx-xx-xx",
+                        subid: "{subid}"
+                    });
+                    `}
+                </Script>
             </body>
         </html>
     );
