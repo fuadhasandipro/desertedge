@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
 
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 const rootHost = ROOT_DOMAIN.replace(/:.*$/, "");
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: {
     remotePatterns: [
       {
@@ -62,6 +62,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
 
 

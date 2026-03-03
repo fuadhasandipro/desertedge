@@ -3,27 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "prebuild": "echo \"Already prepared edge data\"",
     "build": "next build",
-    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "start": "next start",
-    "lint": "eslint"
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.17.1",
     "adm-zip": "^0.5.16",
     "clsx": "^2.1.1",
     "csv-parser": "^3.2.0",
     "lucide-react": "^0.574.0",
-    "next": "15.1.7",
+    "next": "15.2.9",
     "ollama": "^0.6.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.1"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.17.1",
     "@tailwindcss/postcss": "^4",
     "@types/adm-zip": "^0.5.7",
     "@types/node": "^20",

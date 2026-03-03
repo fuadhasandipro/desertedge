@@ -9,7 +9,7 @@ import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/data/constants";
 export const revalidate = 86400;
 export const dynamicParams = true;
 
-export const services = [
+const services = [
   {
     title: "Emergency Plumbing Near Me",
     description: "24/7 rapid response for urgent issues in near me.",
