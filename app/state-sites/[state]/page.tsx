@@ -24,13 +24,13 @@ export default async function StatePage({
     params: Promise<{ state: string }>;
 }) {
     const { state } = await params;
-    // Fetch cities and state name in parallel
-    const [cities, stateName] = await Promise.all([
-        getCitiesForState(state) as Promise<CityEntry[]>,
-        getStateName(state),
-    ]);
+    // getCitiesForState is deduplicated by React cache() — layout + page share one fetch
+    const cities = await getCitiesForState(state) as CityEntry[];
 
     if (!cities || !cities.length) notFound();
+
+    // getStateName is now a synchronous dictionary lookup — zero fetch cost
+    const stateName = getStateName(state);
 
     // Dynamic services array with state name appended to each
     const services = [

@@ -1,38 +1,26 @@
 // lib/city-data.ts
+import { cache } from "react";
+
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-/**
- * Determines a reliable base URL for fetching static JSON assets.
- * 
- * On Cloudflare Workers/Pages:
- * - CF_PAGES_URL is only available at BUILD TIME, not at runtime.
- * - The worker can reach its own domain via Cloudflare internal routing.
- * - We use https://ROOT_DOMAIN in production, localhost in dev.
- * 
- * Static assets in public/ are served via the ASSETS binding, accessible
- * at https://ROOT_DOMAIN/data/... without leaving the Cloudflare network.
- */
 function getBaseUrl(): string {
     if (process.env.NODE_ENV === "development") {
         return "http://localhost:3000";
     }
-    // In production (Cloudflare Pages), always use the root domain.
-    // The worker fetches from its own origin — no external round-trip.
     return `https://${ROOT_DOMAIN}`;
 }
 
 /**
- * Fetches a JSON file from the static assets (public/ directory).
- * Uses `cache: 'force-cache'` so Cloudflare caches responses at the edge,
- * avoiding repeated network calls for the same city/state data.
+ * React cache() ensures that within a single render pass, multiple components
+ * calling fetchJson with the same URL (e.g., layout + page both fetching
+ * the same state-cities JSON) only make ONE actual HTTP request.
+ * This is the primary fix for the Cloudflare Workers free-tier CPU limit (1102).
  */
-async function fetchJson(urlPath: string): Promise<any> {
-    const baseUrl = getBaseUrl();
-    const url = `${baseUrl}${urlPath}`;
+const fetchJson = cache(async (urlPath: string): Promise<any> => {
+    const url = `${getBaseUrl()}${urlPath}`;
     try {
         const res = await fetch(url, {
             cache: "force-cache",
-            // Next.js ISR hint: revalidate every 24 hours
             next: { revalidate: 86400 },
         });
         if (!res.ok) {
@@ -44,7 +32,7 @@ async function fetchJson(urlPath: string): Promise<any> {
         console.warn(`[city-data] Fetch failed for ${url}:`, e);
         return null;
     }
-}
+});
 
 export interface NearbyCity { name: string; slug: string; state: string; }
 export interface Service { service_id: string; service_title: string; hero: { subheadline: string }; }
@@ -68,10 +56,33 @@ export interface CityData {
     services: Service[];
 }
 
-// ── Single city by slug (ASYNC) ───────────────────────────────────────────────
-export async function getCityBySlug(slug: string): Promise<CityData | null> {
-    return fetchJson(`/data/cities/${slug.toLowerCase()}.json`) as Promise<CityData | null>;
+// ── Hardcoded state name map — ZERO fetch cost, eliminates states.json HTTP call ──
+// All 50 US states + DC + PR. A dictionary lookup is instant; no network needed.
+const US_STATE_NAMES: Record<string, string> = {
+    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas",
+    CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware",
+    FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho",
+    IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas",
+    KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland",
+    MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi",
+    MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada",
+    NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York",
+    NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma",
+    OR: "Oregon", PA: "Pennsylvania", PR: "Puerto Rico", RI: "Rhode Island",
+    SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas",
+    UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington",
+    WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming", DC: "Washington D.C.",
+};
+
+// ── Lookup full state name — instant dictionary lookup, no fetch ───────────────
+export function getStateName(stateShort: string): string {
+    return US_STATE_NAMES[stateShort.toUpperCase()] ?? stateShort.toUpperCase();
 }
+
+// ── Single city by slug (ASYNC) ───────────────────────────────────────────────
+export const getCityBySlug = cache(async (slug: string): Promise<CityData | null> => {
+    return fetchJson(`/data/cities/${slug.toLowerCase()}.json`) as Promise<CityData | null>;
+});
 
 // ── All unique states present in your data (ASYNC) ───────────────────────────
 export async function getAllStates(): Promise<StateSummary[]> {
@@ -79,20 +90,11 @@ export async function getAllStates(): Promise<StateSummary[]> {
     return (data as StateSummary[]) || [];
 }
 
-// ── Lookup full state name from abbreviation (e.g. "AZ" → "Arizona") ─────────
-export async function getStateName(stateShort: string): Promise<string> {
-    const states = await getAllStates();
-    const match = states.find(
-        (s) => s.state.toUpperCase() === stateShort.toUpperCase()
-    );
-    return match?.state_name ?? stateShort.toUpperCase();
-}
-
-// ── Cities for one state (ASYNC) ──────────────────────────────────────────────
-export async function getCitiesForState(stateShort: string): Promise<CityData[]> {
+// ── Cities for one state (ASYNC) — deduplicated per render via React cache() ──
+export const getCitiesForState = cache(async (stateShort: string): Promise<CityData[]> => {
     const data = await fetchJson(`/data/state-cities/${stateShort.toUpperCase()}.json`);
     return (data as CityData[]) || [];
-}
+});
 
 // ── All city slugs (for generateStaticParams) ─────────────────────────────────
 // Returns empty array — dynamicParams = true handles on-demand rendering.

@@ -16,10 +16,8 @@ export async function generateMetadata({
     params: Promise<{ state: string }>;
 }): Promise<Metadata> {
     const { state } = await params;
-    const [cities, stateName] = await Promise.all([
-        getCitiesForState(state),
-        getStateName(state),
-    ]);
+    const cities = await getCitiesForState(state);
+    const stateName = getStateName(state); // sync dictionary lookup
 
     if (!cities.length) return {};
 
@@ -72,10 +70,8 @@ export async function generateMetadata({
 
 export default async function StateLayout({ children, params }: Props) {
     const { state } = await params;
-    const [cities, stateName] = await Promise.all([
-        getCitiesForState(state),
-        getStateName(state),
-    ]);
+    const cities = await getCitiesForState(state);
+    const stateName = getStateName(state); // sync dictionary lookup
 
     if (!cities.length) notFound();
 
