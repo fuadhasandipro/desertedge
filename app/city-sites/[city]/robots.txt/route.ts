@@ -1,10 +1,5 @@
 // app/city-sites/[city]/robots.txt/route.ts
-//
-// Served at:  dallas-tx.rootdomain.com/robots.txt
-// Middleware: dallas-tx.rootdomain.com/robots.txt → /city-sites/dallas-tx/robots.txt
-//
-// City-level robots — allows all service pages, blocks internals + AI bots.
-// Lists all 4 city sitemap variants so crawlers discover everything.
+// Served at: [city].desertedgeplumbing.com/robots.txt
 
 export const dynamic = "force-dynamic";
 
@@ -18,53 +13,44 @@ export async function GET(
 
     const host = `https://${city.toLowerCase()}.${ROOT_DOMAIN}`;
 
-    const content = `# ============================================================
-# robots.txt — ${host}
+    const content = `# robots.txt — ${host}
 # City-level plumbing service subdomain
-# ============================================================
 
-# ── Content Signal Declaration ───────────────────────────────────────────────
-# search:   YES  — index pages and return results
-# ai-input: NO   — do not use content for real-time AI answers
-# ai-train: NO   — do not train AI/ML models on this content
-#
-# ANY RESTRICTIONS ARE EXPRESS RESERVATIONS OF RIGHTS UNDER
-# ARTICLE 4, EU DIRECTIVE 2019/790 (DSM COPYRIGHT DIRECTIVE).
-
-# ── Default: allow legitimate crawlers ───────────────────────────────────────
+# ── Allow all legitimate crawlers ────────────────────────────────────────────
 User-agent: *
 Allow: /
-Allow: /services/
-Allow: /about-us
-Allow: /contact-us
 Disallow: /_next/
 Disallow: /api/
 Disallow: /data/
 Disallow: /*.json$
 
-# ── Block AI training & scraping bots ────────────────────────────────────────
+# ── Allow AI citation bots (needed for llms.txt indexing & AI citations) ─────
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
 
-User-agent: Amazonbot
-Disallow: /
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
 
 User-agent: Applebot-Extended
-Disallow: /
+Allow: /
 
+# ── Block pure scrapers / bulk harvesters ────────────────────────────────────
 User-agent: Bytespider
 Disallow: /
 
 User-agent: CCBot
-Disallow: /
-
-User-agent: meta-externalagent
 Disallow: /
 
 User-agent: Diffbot
@@ -76,13 +62,13 @@ Disallow: /
 User-agent: omgilibot
 Disallow: /
 
+User-agent: meta-externalagent
+Disallow: /
+
 User-agent: FacebookBot
 Disallow: /
 
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: cohere-ai
+User-agent: Amazonbot
 Disallow: /
 
 # ── Sitemaps ─────────────────────────────────────────────────────────────────

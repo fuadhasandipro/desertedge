@@ -1,0 +1,49 @@
+# Desert Edge Plumbing — AI Context Index (llms.txt)
+# https://desertedgeplumbing.com/llms.txt
+# Standard: https://llmstxt.org/
+
+> Desert Edge Plumbing connects homeowners in 1,600+ US cities with licensed local plumbers — free, 24/7.
+
+## About
+
+- **Website**: https://desertedgeplumbing.com
+- **Phone**: (844) 984-3080
+- **Coverage**: All 50 US states, 1,600+ cities
+
+## URL Patterns
+
+City homepage:
+  https://[city-slug].desertedgeplumbing.com/
+
+City service page:
+  https://[city-slug].desertedgeplumbing.com/services/[service-id]
+
+AI context file for a specific city + service:
+  https://[city-slug].desertedgeplumbing.com/services/[service-id]/llms.txt
+
+Example — Emergency Plumbing in Phoenix, AZ:
+  Page:    https://phoenix-az.desertedgeplumbing.com/services/emergency-plumbing
+  llms.txt: https://phoenix-az.desertedgeplumbing.com/services/emergency-plumbing/llms.txt
+
+## Service IDs (use in URL pattern above)
+
+Emergency: emergency-plumbing, burst-pipe-repair, 24-7-service, gas-line-services
+Leaks:     leak-detection, leak-repair, water-line-repair, slab-leak-detection, slab-leak-repair
+Drains:    drain-cleaning, clogged-drain-service, hydro-jetting, video-pipe-inspection
+Sewer:     sewer-line-repair, sewer-line-replacement, trenchless-sewer-repair
+Heaters:   water-heater-repair, water-heater-replacement, tankless-water-heater
+Pipes:     pipe-installation-repiping, new-construction-plumbing, remodel-plumbing
+Commercial: commercial-plumbing-maintenance, backflow-testing, grease-trap-cleaning
+
+## Discover All Cities
+
+City pages are indexed via sitemap:
+  https://desertedgeplumbing.com/sitemap.xml
+  https://desertedgeplumbing.com/sitemap-index.xml
+
+Each city-slug follows the pattern: [city-name]-[state-abbreviation]
+Examples: phoenix-az, houston-tx, chicago-il, miami-fl, dallas-tx
+
+## Disclosure
+
+Free referral service. All contractors are independent. Does not warrant or guarantee work performed.
