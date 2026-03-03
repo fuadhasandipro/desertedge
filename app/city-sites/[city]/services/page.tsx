@@ -80,7 +80,13 @@ export default async function ServicesPage({ params }: Props) {
 
                         {/* DYNAMIC SERVICES RENDERED FROM JSON */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {cityData.services?.map((service) => (
+                            {/* NOTE: Commercial services excluded per request. Remove the .filter() below to revert */}
+                            {cityData.services?.filter((service) => {
+                                const isCommercial =
+                                    service.service_id.includes("commercial") ||
+                                    service.service_id.includes("grease-trap");
+                                return !isCommercial;
+                            }).map((service) => (
                                 <ServiceCard
                                     key={service.service_id}
                                     title={service.service_title}

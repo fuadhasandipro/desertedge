@@ -247,8 +247,14 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {/* NOTE: Commercial services excluded per request. Remove the .filter() rule below to revert */}
                         {services
-                            .filter(s => s.service_id !== serviceData.service_id)
+                            .filter(s => {
+                                const isCommercial =
+                                    s.service_id.includes("commercial") ||
+                                    s.service_id.includes("grease-trap");
+                                return !isCommercial && s.service_id !== serviceData.service_id;
+                            })
                             .map((s) => (
                                 <ServiceCard
                                     key={s.service_id}
