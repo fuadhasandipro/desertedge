@@ -9,6 +9,7 @@
 export const dynamic = "force-dynamic";
 
 import { getCityBySlug } from "@/lib/city-data";
+import { COMMERCIAL_SERVICE_IDS } from "@/lib/constants";
 
 function randomRecentDate(): string {
   const now = Date.now();
@@ -62,6 +63,7 @@ export async function GET(
 
   // All individual service pages from city JSON
   for (const service of cityData.services ?? []) {
+    if (COMMERCIAL_SERVICE_IDS.has(service.service_id)) continue;
     entries.push(`  <url>
     <loc>${base}/services/${service.service_id}</loc>
     <lastmod>${randomRecentDate()}</lastmod>

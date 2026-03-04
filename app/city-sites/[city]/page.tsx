@@ -7,6 +7,7 @@ import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { MapPin, Award, ChevronDown } from "lucide-react";
 import { getCitiesForState, getCityBySlug } from "@/lib/city-data";
+import { COMMERCIAL_SERVICE_IDS } from "@/lib/constants";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NearbyCity { name: string; slug: string; state: string; }
@@ -208,30 +209,24 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                             {about.body_paragraphs.map((para, i) => (
                                 <p key={i} className="text-lg text-slate-600 leading-relaxed mb-6">{para}</p>
                             ))}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                                <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-                                    <h4 className="text-xl font-extrabold text-slate-900 mb-3">{about.residential_box.title}</h4>
-                                    <p className="text-slate-500 text-sm leading-relaxed">{about.residential_box.description}</p>
-                                </div>
-                                <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-                                    <h4 className="text-xl font-extrabold text-slate-900 mb-3">{about.commercial_box.title}</h4>
-                                    <p className="text-slate-500 text-sm leading-relaxed">{about.commercial_box.description}</p>
-                                </div>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm mt-8">
+                                <h4 className="text-xl font-extrabold text-slate-900 mb-3">{about.residential_box.title}</h4>
+                                <p className="text-slate-500 text-sm leading-relaxed">{about.residential_box.description}</p>
                             </div>
-                        </div>
-                        <div className="flex-1 relative">
-                            <div className="absolute -inset-4 bg-slate-100 rounded-[3rem] -rotate-2 z-0" />
-                            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white">
-                                <Image src="https://ik.imagekit.io/nang9yead/Plumber%20Fixing%20Leaking%20Sink%20Pipe%20with%20Wrench.png?updatedAt=1756066955385" alt={hero.hero_image_alt} width={800} height={600} className="object-cover" />
-                            </div>
-                            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-50 z-20 hidden md:block">
-                                <div className="flex items-center gap-4">
-                                    <div className="bg-brand-100 p-3 rounded-full text-brand-600">
-                                        <Award className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <p className="text-2xl font-black text-slate-900 leading-none">{about.badge_stat}</p>
-                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{about.badge_label}</p>
+                            <div className="flex-1 relative">
+                                <div className="absolute -inset-4 bg-slate-100 rounded-[3rem] -rotate-2 z-0" />
+                                <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white">
+                                    <Image src="https://ik.imagekit.io/nang9yead/Plumber%20Fixing%20Leaking%20Sink%20Pipe%20with%20Wrench.png?updatedAt=1756066955385" alt={hero.hero_image_alt} width={800} height={600} className="object-cover" />
+                                </div>
+                                <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-50 z-20 hidden md:block">
+                                    <div className="flex items-center gap-4">
+                                        <div className="bg-brand-100 p-3 rounded-full text-brand-600">
+                                            <Award className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-2xl font-black text-slate-900 leading-none">{about.badge_stat}</p>
+                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{about.badge_label}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +244,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                             <p className="text-lg text-slate-600 max-w-3xl">{services_section.intro}</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {services?.map((service) => (
+                            {services?.filter(s => !COMMERCIAL_SERVICE_IDS.has(s.service_id)).map((service) => (
                                 <ServiceCard
                                     key={service.service_id}
                                     title={service.service_title}

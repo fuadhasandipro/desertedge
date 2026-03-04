@@ -11,6 +11,28 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       // ── All crawlers (Google, Bing, etc.) ─────────────────────────────────
       {
+        userAgent: "Googlebot",
+        allow: ["/"],
+        disallow: [
+          "/_next/",
+          "/api/",
+          "/data/",
+          "/*.json",
+        ],
+      },
+
+      // ── Bingbot — allow everything ─────────────────────────────────────────
+      {
+        userAgent: "Bingbot",
+        allow: ["/"],
+        disallow: [
+          "/_next/",
+          "/api/",
+          "/data/",
+          "/*.json",
+        ],
+      },
+      {
         userAgent: "*",
         allow: ["/"],
         disallow: [

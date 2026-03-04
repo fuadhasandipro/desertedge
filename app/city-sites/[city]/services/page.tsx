@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCityBySlug } from "@/lib/city-data";
 import ServiceCard from "@/components/shared/ServiceCard";
+import { COMMERCIAL_SERVICE_IDS } from "@/lib/constants";
 
 interface Props {
     params: Promise<{ city: string }>;
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props) {
 
     return {
         title: `Top-Rated Plumbing Services in ${cityData.city}, ${cityData.state} | 24/7 Pros`,
-        description: `Explore comprehensive residential and commercial plumbing solutions in ${cityData.city}. Licensed experts available 24/7 for drains, water heaters, leaks, and emergencies.`,
+        description: `Explore comprehensive residential plumbing solutions in ${cityData.city}. Licensed experts available 24/7 for drains, water heaters, leaks, and emergencies.`,
         keywords: [
             `plumbing services ${cityData.city}`,
             `${cityData.city} plumbers`,
@@ -81,12 +82,9 @@ export default async function ServicesPage({ params }: Props) {
                         {/* DYNAMIC SERVICES RENDERED FROM JSON */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             {/* NOTE: Commercial services excluded per request. Remove the .filter() below to revert */}
-                            {cityData.services?.filter((service) => {
-                                const isCommercial =
-                                    service.service_id.includes("commercial") ||
-                                    service.service_id.includes("grease-trap");
-                                return !isCommercial;
-                            }).map((service) => (
+                            {cityData.services?.filter((service) =>
+                                !COMMERCIAL_SERVICE_IDS.has(service.service_id)
+                            ).map((service) => (
                                 <ServiceCard
                                     key={service.service_id}
                                     title={service.service_title}

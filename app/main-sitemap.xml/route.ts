@@ -4,15 +4,9 @@
 // NOTE: Next.js sitemap convention only supports the filename "sitemap".
 // main-sitemap.xml must use a Route Handler. Mirrors app/sitemap.ts output.
 
-export const dynamic = "force-dynamic";
+import { US_STATES_LC } from "@/lib/constants";
 
-const US_STATES = [
-  "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga",
-  "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
-  "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
-  "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
-  "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
-];
+export const dynamic = "force-dynamic";
 
 function randomLastmod(): string {
   const now = Date.now();
@@ -36,7 +30,7 @@ export async function GET() {
     <priority>1.0</priority>
   </url>`);
 
-  for (const state of US_STATES) {
+  for (const state of US_STATES_LC) {
     const lastmod = randomLastmod();
     urlEntries.push(`
   <url>

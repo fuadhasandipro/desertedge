@@ -5,15 +5,15 @@ import { CheckCircle2, MapPin } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { getCitiesForState, getStateName } from "@/lib/city-data";
-import { PHONE_NUMBER, PHONE_NUMBER_TEL } from "@/lib/constants";
+import { PHONE_NUMBER, PHONE_NUMBER_TEL, US_STATES_LC } from "@/lib/constants";
 import { getServices } from "@/lib/services";
 import type { CityEntry } from "@/lib/types";
 
-export const revalidate = 86400;
-export const dynamicParams = true;
+export const revalidate = 604800; // 7 days — state pages change rarely
+export const dynamicParams = false; // Only the 50 known states are valid
 
 export async function generateStaticParams() {
-    return [];
+    return US_STATES_LC.map((state) => ({ state }));;
 }
 
 export default async function StatePage({

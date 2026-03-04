@@ -91,6 +91,7 @@ interface CityData {
 }
 
 import { getCityBySlug } from "@/lib/city-data";
+import { COMMERCIAL_SERVICE_IDS } from "@/lib/constants";
 
 async function getCityData(slug: string): Promise<CityData | null> {
     return await getCityBySlug(slug) as unknown as CityData | null;
@@ -249,12 +250,10 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {/* NOTE: Commercial services excluded per request. Remove the .filter() rule below to revert */}
                         {services
-                            .filter(s => {
-                                const isCommercial =
-                                    s.service_id.includes("commercial") ||
-                                    s.service_id.includes("grease-trap");
-                                return !isCommercial && s.service_id !== serviceData.service_id;
-                            })
+                            .filter(s =>
+                                !COMMERCIAL_SERVICE_IDS.has(s.service_id) &&
+                                s.service_id !== serviceData.service_id
+                            )
                             .map((s) => (
                                 <ServiceCard
                                     key={s.service_id}

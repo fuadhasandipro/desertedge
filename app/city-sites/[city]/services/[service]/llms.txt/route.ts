@@ -9,7 +9,7 @@
 import { NextResponse } from "next/server";
 import { getCityBySlug } from "@/lib/city-data";
 import { SERVICE_LLMS_DATA } from "@/lib/service-llms-data";
-import { PHONE_NUMBER } from "@/lib/constants";
+import { COMMERCIAL_SERVICE_IDS, PHONE_NUMBER } from "@/lib/constants";
 
 const ROOT_DOMAIN =
     process.env.NEXT_PUBLIC_ROOT_DOMAIN || "desertedgeplumbing.com";
@@ -64,7 +64,7 @@ export async function GET(
         .join("\n");
 
     // All services available in this city
-    const allCityServices = cityData.services
+    const allCityServices = cityData.services.filter((s) => !COMMERCIAL_SERVICE_IDS.has(s.service_id))
         .map(
             (s) =>
                 `- ${s.service_title}: ${cityPageBase}/services/${s.service_id}/llms.txt`

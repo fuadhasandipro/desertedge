@@ -15,11 +15,11 @@ export const ROOT_DOMAIN =
 
 /** All 50 US state abbreviations in lowercase — used by middleware + sitemaps */
 export const US_STATES_LC = [
-    "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga",
-    "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
-    "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
-    "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
-    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy",
+    "ak", "al", "ar", "az", "ca", "co", "ct", "de", "fl", "ga",
+    "hi", "ia", "id", "il", "in", "ks", "ky", "la", "ma", "md", "me",
+    "mi", "mn", "mo", "ms", "mt", "nc", "nd", "ne", "nh", "nj", "nm", "nv",
+    "ny", "oh", "ok", "or", "pa", "ri", "sc",
+    "sd", "tn", "tx", "ut", "va", "vt", "wa", "wi", "wv", "wy",
 ] as const;
 
 /** Set of US state abbreviations for O(1) middleware lookups */
@@ -42,3 +42,16 @@ export const US_STATE_NAMES: Record<string, string> = {
     WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming", DC: "Washington D.C.",
 };
 
+
+/**
+ * Service IDs excluded sitewide — commercial/industrial services not offered.
+ * Used by page-level filters AND sitemap route handlers.
+ * Edit this set to control exclusion everywhere at once.
+ */
+export const COMMERCIAL_SERVICE_IDS = new Set([
+    "commercial-plumbing-maintenance",
+    "grease-trap-cleaning",
+    "backflow-testing",
+    "backflow-prevention",
+    "new-construction-plumbing",
+]);

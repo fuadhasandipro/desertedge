@@ -62,7 +62,25 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
+
+  async headers() {
+    return [
+      {
+        // Apply to all pages except Next.js internals and API routes
+        source: "/((?!_next/|api/).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+    ];
+  },
+
 };
+
 
 export default nextConfig;
 
