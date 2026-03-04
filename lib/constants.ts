@@ -49,6 +49,7 @@ export const US_STATE_NAMES: Record<string, string> = {
  * Edit this set to control exclusion everywhere at once.
  */
 export const COMMERCIAL_SERVICE_IDS = new Set([
+    "commercial-plumbing",
     "commercial-plumbing-maintenance",
     "grease-trap-cleaning",
     "backflow-testing",
