@@ -209,11 +209,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                             {about.body_paragraphs.map((para, i) => (
                                 <p key={i} className="text-lg text-slate-600 leading-relaxed mb-6">{para}</p>
                             ))}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                                <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-                                    <h4 className="text-xl font-extrabold text-slate-900 mb-3">{about.residential_box.title}</h4>
-                                    <p className="text-slate-500 text-sm leading-relaxed">{about.residential_box.description}</p>
-                                </div>
+                            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm mt-8">
+                                <h4 className="text-xl font-extrabold text-slate-900 mb-3">{about.residential_box.title}</h4>
+                                <p className="text-slate-500 text-sm leading-relaxed">{about.residential_box.description}</p>
                             </div>
                         </div>
                         <div className="flex-1 relative">
