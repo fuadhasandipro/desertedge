@@ -1,62 +1,26 @@
 // lib/city-data.ts
-// Reads JSON data files directly from disk (public/data/) instead of making
-// HTTP self-calls. This eliminates Worker→Worker self-requests that were
-// doubling the request count on every page render.
-
 import { cache } from "react";
 import type { CityData, StateSummary, CityEntry } from "@/lib/types";
 import { US_STATE_NAMES } from "@/lib/constants";
-import { headers } from "next/headers";
-
-// In Cloudflare Workers (via OpenNext), __dirname is not available.
-// Data files are in public/data/ and are bundled as static assets.
-// We check for Node.js environment first (local dev), then fall back
-// to fetching from the self URL (Cloudflare Worker runtime).
 
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
-async function getBaseUrl(): Promise<string> {
-    if (process.env.NODE_ENV === "development") {
-        return "http://localhost:3000";
-    }
-
-    // In Cloudflare Worker SSR, fetch using the exact incoming request host
-    // to keep OpenNext recognizing it as an internal request (avoids Error 1000 Zone Loop).
-    try {
-        const headersList = await headers();
-        const host = headersList.get("host") || headersList.get("x-forwarded-host");
-        if (host) {
-            const protocol = headersList.get("x-forwarded-proto") || "https";
-            return `${protocol}://${host}`;
-        }
-    } catch (e) {
-        // Fallback for build time where headers() is not available
-    }
-
-    return `https://${ROOT_DOMAIN}`;
+function getBaseUrl(): string {
+    return process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : `https://${ROOT_DOMAIN}`;
 }
 
 /**
- * Reads a JSON file from the public/data directory.
- *
- * - In LOCAL DEV (Node.js): reads directly from disk using fs — zero network requests.
- * - In CLOUDFLARE (Worker): falls back to fetch() against the ASSETS binding,
- *   which is served from Cloudflare's edge with no Worker invocation, so it
- *   does NOT count against the 100k/day Worker request limit.
- *
- * Wrapped in React cache() to deduplicate within a single render pass.
+ * Fetches a JSON asset from the public/ directory.
+ * Wrapped in React cache() so identical calls within the same render tree
+ * (e.g. layout + page both requesting the same state-cities file) share one
+ * HTTP request — critical for staying within Cloudflare free-tier CPU limits.
  */
-
-
 const fetchJson = cache(async (urlPath: string): Promise<unknown> => {
-    const baseUrl = await getBaseUrl();
-    const url = `${baseUrl}${urlPath}`;
-
+    const url = `${getBaseUrl()}${urlPath}`;
     try {
-
         const res = await fetch(url, {
-
-
             cache: "force-cache",
             next: { revalidate: 86400 },
         });
@@ -71,7 +35,7 @@ const fetchJson = cache(async (urlPath: string): Promise<unknown> => {
     }
 });
 
-
+// ── Single city by slug ────────────────────────────────────────────────────────
 export const getCityBySlug = cache(
     async (slug: string): Promise<CityData | null> =>
         fetchJson(`/data/cities/${slug.toLowerCase()}.json`) as Promise<CityData | null>
