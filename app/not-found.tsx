@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { Wrench, PhoneCall } from 'lucide-react';
 import Header from '@/components/Header';
@@ -49,13 +51,21 @@ export default function NotFound() {
                             icon="arrow"
                         />
 
-                        <Link
+                        <a
                             href={`tel:${emergencyPhone.replace(/\D/g, '')}`}
+                            onClick={() => {
+                                import('@next/third-parties/google').then(({ sendGAEvent }) => {
+                                    sendGAEvent('event', 'phone_click', {
+                                        page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+                                        phone_number: emergencyPhone
+                                    });
+                                });
+                            }}
                             className="group flex items-center justify-center gap-2 px-6 py-3 text-slate-700 bg-white border-2 border-slate-200 rounded-full hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-all font-semibold w-full sm:w-auto shadow-sm"
                         >
                             <PhoneCall className="w-5 h-5 text-blue-600 group-hover:animate-pulse" />
                             Need an Emergency Plumber?
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </main>

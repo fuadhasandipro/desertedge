@@ -4,7 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
-import { ShieldCheck, ChevronDown, CheckCircle2 } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import type { Metadata } from "next";
@@ -76,7 +76,6 @@ interface ServicePageData {
     signs_you_need_section: { h2: string; body: string };
     our_process_section: { h2: string; body: string };
     service_area_section: { h2: string; body: string };
-    related_services: { service_id: string; label: string }[];
 }
 
 interface CityData {

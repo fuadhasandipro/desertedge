@@ -251,21 +251,7 @@
       "service_area_section": {
         "h2": "Emergency Plumbing in Aberdeen, SD & Surrounding Areas",
         "body": "We serve Aberdeen, SD, and surrounding areas, including Prairiewood Village, Bath Corner, and Warner. Our services are designed to meet the unique needs of Aberdeen, SD residents, where municipal water supply and standard freeze risk require professional expertise. We're proud to be a part of this community and look forward to serving you."
-      },
-      "related_services": [
-        {
-          "service_id": "burst-pipe-repair",
-          "label": "Burst Pipe Repair"
-        },
-        {
-          "service_id": "leak-repair",
-          "label": "Leak Repair"
-        },
-        {
-          "service_id": "24-7-service",
-          "label": "24/7 Service"
-        }
-      ]
+      }
     },
     {
       "service_id": "leak-repair",
@@ -303,21 +289,7 @@
       "service_area_section": {
         "h2": "Leak Repair in Aberdeen, SD & Surrounding Areas",
         "body": "We serve Aberdeen, SD, and surrounding areas, including Bath, Warner, and Columbia. Our services are designed to meet the unique needs of Aberdeen, SD residents, where municipal water supply and standard freeze risk require professional expertise. We're proud to be a part of this community and look forward to serving you."
-      },
-      "related_services": [
-        {
-          "service_id": "leak-detection",
-          "label": "Leak Detection"
-        },
-        {
-          "service_id": "water-line-repair",
-          "label": "Water Line Repair"
-        },
-        {
-          "service_id": "pipe-installation-repiping",
-          "label": "Pipe Installation & Repiping"
-        }
-      ]
+      }
     },
     {
       "service_id": "drain-cleaning",

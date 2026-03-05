@@ -52,7 +52,5 @@ export const COMMERCIAL_SERVICE_IDS = new Set([
     "commercial-plumbing",
     "commercial-plumbing-maintenance",
     "grease-trap-cleaning",
-    "backflow-testing",
-    "backflow-prevention",
     "new-construction-plumbing",
 ]);

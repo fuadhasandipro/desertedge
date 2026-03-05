@@ -1,6 +1,8 @@
-// components/shared/GlowingButton.tsx
+"use client";
+
 import { Phone, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface GlowingButtonProps {
     href: string;
@@ -25,7 +27,16 @@ export default function GlowingButton({ href, text, variant = 'primary', icon = 
 
     if (isTel) {
         return (
-            <a href={href} className={`${baseStyles} ${variants[variant]} ${className}`}>
+            <a
+                href={href}
+                className={`${baseStyles} ${variants[variant]} ${className}`}
+                onClick={() => {
+                    sendGAEvent('event', 'phone_click', {
+                        page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+                        phone_number: href.replace('tel:', '')
+                    });
+                }}
+            >
                 {Icon && <Icon className={`w-5 h-5 ${icon === 'phone' ? 'animate-pulse' : ''}`} />}
                 <span>{text}</span>
             </a>

@@ -7,7 +7,7 @@ import ServiceCard from "@/components/shared/ServiceCard";
 import GlowingButton from "@/components/shared/GlowingButton";
 import { MapPin, Award, ChevronDown } from "lucide-react";
 import { getCitiesForState, getCityBySlug } from "@/lib/city-data";
-import { COMMERCIAL_SERVICE_IDS } from "@/lib/constants";
+import { COMMERCIAL_SERVICE_IDS, PHONE_NUMBER_TEL } from "@/lib/constants";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NearbyCity { name: string; slug: string; state: string; }
@@ -181,7 +181,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                         <p className="text-xl text-slate-200 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
                             {hero.subheadline}
                         </p>
-                        <GlowingButton href={`tel:${phone}`} text={hero.cta_label} icon="phone" variant="primary" />
+                        <GlowingButton href={`tel:${PHONE_NUMBER_TEL}`} text={hero.cta_label} icon="phone" variant="primary" />
                     </div>
                 </section>
 

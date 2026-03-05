@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -89,6 +90,7 @@ export default function RootLayout({
                         mcc('requestTrackingNumber', {campaign:"339073",selector:[{type:"dom",value:"a[href^='tel:']"}],mask:"(xxx) xxx-xx-xx"});
                     `}
                 </Script>
+                {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
             </body>
         </html>
     );
