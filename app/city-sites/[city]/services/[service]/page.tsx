@@ -148,7 +148,6 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
 
     const { city: cityName, state, county_name, nearby_cities, zip_codes, faqs, services } = cityData;
 
-    const relevantFaqs = faqs.slice(0, 5);
     const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
     const canonicalBase = `https://${cityData.slug}.${rootDomain}/services/${serviceData.service_id}`;
 

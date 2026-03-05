@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { US_STATES_SET } from "@/lib/constants";
 
+const CACHE_VERSION = "20260305"; // Change this to clear cache site-wide
+
 export const config = {
     matcher: [
         "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)$).*)",
@@ -55,10 +57,12 @@ export default function middleware(req: NextRequest) {
     // ── 5. State subdomain (2-letter code matching a real US state) ───────────
     if (sub.length === 2 && US_STATES_SET.has(sub)) {
         url.pathname = currentPath === "/" ? `/state-sites/${sub}` : `/state-sites/${sub}${currentPath}`;
+        url.searchParams.set("v", CACHE_VERSION);
         return NextResponse.rewrite(url);
     }
 
     // ── 6. City subdomain ─────────────────────────────────────────────────────
     url.pathname = currentPath === "/" ? `/city-sites/${sub}` : `/city-sites/${sub}${currentPath}`;
+    url.searchParams.set("v", CACHE_VERSION);
     return NextResponse.rewrite(url);
 }
