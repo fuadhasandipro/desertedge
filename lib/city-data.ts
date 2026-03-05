@@ -18,7 +18,7 @@ function getBaseUrl(): string {
  * HTTP request — critical for staying within Cloudflare free-tier CPU limits.
  */
 const fetchJson = cache(async (urlPath: string): Promise<unknown> => {
-    const url = `${getBaseUrl()}${urlPath}`;
+    const url = `${getBaseUrl()}${urlPath}?v=2`;
     try {
         const res = await fetch(url, {
             cache: "force-cache",
