@@ -35,6 +35,11 @@
         "count": 42
     },
     {
+        "state": "DC",
+        "state_name": "District of Columbia",
+        "count": 1
+    },
+    {
         "state": "DE",
         "state_name": "Delaware",
         "count": 23
@@ -190,6 +195,11 @@
         "count": 450
     },
     {
+        "state": "PR",
+        "state_name": "PR",
+        "count": 6
+    },
+    {
         "state": "RI",
         "state_name": "Rhode Island",
         "count": 4
@@ -222,7 +232,7 @@
     {
         "state": "VA",
         "state_name": "Virginia",
-        "count": 216
+        "count": 217
     },
     {
         "state": "VT",
