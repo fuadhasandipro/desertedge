@@ -94,11 +94,6 @@ export default async function StateLayout({ children, params }: Props) {
             addressCountry: "US",
         },
         url: `https://${stateShort.toLowerCase()}.${ROOT_DOMAIN}`,
-        aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            reviewCount: "169"
-        }
     };
 
     return (

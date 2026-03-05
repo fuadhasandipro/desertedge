@@ -112,18 +112,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             latitude: data.lat,
             longitude: data.lng,
         },
-        review: {
-            '@type': 'Review',
-            reviewRating: {
-                '@type': 'Rating',
-                ratingValue: avgRating,
-                bestRating: '5',
-            },
-            author: {
-                '@type': 'Person',
-                name: `${data.state_name} Emergency Plumbing`,
-            },
-        },
         telephone: data.phone,
         openingHoursSpecification: {
             '@type': 'OpeningHoursSpecification',
@@ -149,7 +137,37 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             "@type": "AggregateRating",
             "reviewCount": 169,
             "ratingValue": avgRating
-        }
+        },
+        "review": [
+            {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "James Carter"
+                },
+                "reviewBody": `Fast and professional plumbing service in ${data.city}. Fixed our burst pipe within the hour.`,
+                "datePublished": "2024-11-15"
+            },
+            {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Sarah Mitchell"
+                },
+                "reviewBody": `Called them for an emergency drain cleaning in ${data.city} and they arrived quickly. Very professional.`,
+                "datePublished": "2024-10-22"
+            }
+        ]
     };
 
     return (

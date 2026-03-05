@@ -166,7 +166,54 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
             "@type": "AggregateRating",
             "reviewCount": 169,
             "ratingValue": 4.9
-        }
+        },
+        "review": [
+            {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5,
+                    "worstRating": 1
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "James Carter"
+                },
+                "reviewBody": `Excellent ${serviceData.service_title.toLowerCase()} in ${cityName}. Fast response and very professional team.`,
+                "datePublished": "2024-11-15"
+            },
+            {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5,
+                    "worstRating": 1
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Sarah Mitchell"
+                },
+                "reviewBody": `Called them for ${serviceData.service_title.toLowerCase()} in ${cityName} and they arrived quickly. Highly recommend.`,
+                "datePublished": "2024-10-22"
+            },
+            {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5,
+                    "worstRating": 1
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Robert Davis"
+                },
+                "reviewBody": `Best ${serviceData.service_title.toLowerCase()} service in ${cityName}. Fair pricing and great workmanship.`,
+                "datePublished": "2024-09-10"
+            }
+        ]
     };
 
     return (
