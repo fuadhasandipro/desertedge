@@ -284,7 +284,7 @@ export default async function SingleServicePage({ params }: { params: Promise<{ 
                         {nearby_cities.map((nc) => (
                             <Link
                                 key={nc.slug}
-                                href={`https://${nc.slug}-${nc.state.toLowerCase()}.${rootDomain}`}
+                                href={`https://${nc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${nc.state.toLowerCase()}.${rootDomain}`}
                                 title={`${serviceData.service_title} in ${nc.name}, ${nc.state}`}
                                 className="px-4 py-2 bg-brand-50 rounded-full border border-brand-100 text-brand-700 font-semibold text-sm hover:bg-brand-100 transition-colors"
                             >

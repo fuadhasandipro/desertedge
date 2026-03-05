@@ -315,7 +315,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                                 {nearby_cities.map((nc) => (
                                     <Link
                                         key={nc.slug}
-                                        href={`https://${nc.slug}-${nc.state.toLowerCase()}.${rootDomain}`}
+                                        href={`https://${nc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${nc.state.toLowerCase()}.${rootDomain}`}
                                         className="px-5 py-3 bg-white rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm shadow-sm hover:border-brand-400 hover:text-brand-600"
                                     >
                                         {nc.name}, {nc.state}
