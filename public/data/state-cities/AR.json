@@ -1,1 +1,771 @@
-[{"city":"Batesville","slug":"batesville-ar","state":"AR","zip_codes":["72501"]},{"city":"Benton","slug":"benton-ar","state":"AR","zip_codes":["72015","72019","72018","72158"]},{"city":"Bentonville","slug":"bentonville-ar","state":"AR","zip_codes":["72713","72712"]},{"city":"Bryant","slug":"bryant-ar","state":"AR","zip_codes":["72002","72022","72089"]},{"city":"Cabot","slug":"cabot-ar","state":"AR","zip_codes":["72023"]},{"city":"Camden","slug":"camden-ar","state":"AR","zip_codes":["71701","71711"]},{"city":"Centerton","slug":"centerton-ar","state":"AR","zip_codes":["72713","72719"]},{"city":"College Station","slug":"college-station-ar","state":"AR","zip_codes":["72053","72206"]},{"city":"Conway","slug":"conway-ar","state":"AR","zip_codes":["72032","72035","72034"]},{"city":"Fort Smith","slug":"fort-smith-ar","state":"AR","zip_codes":["72908","72901","72904","72923","72916","72903","72906","72913","72914","72917","72918","72919"]},{"city":"Hot Springs","slug":"hot-springs-ar","state":"AR","zip_codes":["71901","71913","71902","71914"]},{"city":"Jacksonville","slug":"jacksonville-ar","state":"AR","zip_codes":["72099","72076","72078"]},{"city":"Jonesboro","slug":"jonesboro-ar","state":"AR","zip_codes":["72467","72401","72404","72405","72402","72403"]},{"city":"North Little Rock","slug":"north-little-rock-ar","state":"AR","zip_codes":["72113","72116","72114","72118","72117","72115","72124","72190","72214"]},{"city":"Paragould","slug":"paragould-ar","state":"AR","zip_codes":["72450","72451"]},{"city":"Pine Bluff","slug":"pine-bluff-ar","state":"AR","zip_codes":["71602","71601","71603","71611","71612"]},{"city":"Rogers","slug":"rogers-ar","state":"AR","zip_codes":["72758","72756","72716","72757"]},{"city":"Russellville","slug":"russellville-ar","state":"AR","zip_codes":["72802","72801","72811"]},{"city":"Searcy","slug":"searcy-ar","state":"AR","zip_codes":["72143","72145","72149"]},{"city":"Sherwood","slug":"sherwood-ar","state":"AR","zip_codes":["72120","72076","72117","72216"]},{"city":"Springdale","slug":"springdale-ar","state":"AR","zip_codes":["72764","72762","72765","72766"]},{"city":"Van Buren","slug":"van-buren-ar","state":"AR","zip_codes":["72956","72957"]},{"city":"West Memphis","slug":"west-memphis-ar","state":"AR","zip_codes":["72301","72364","72303"]}]
+[
+    {
+        "city": "Altus",
+        "slug": "altus-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72949"
+        ]
+    },
+    {
+        "city": "Aubrey",
+        "slug": "aubrey-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72360"
+        ]
+    },
+    {
+        "city": "Avoca",
+        "slug": "avoca-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72756"
+        ]
+    },
+    {
+        "city": "Barling",
+        "slug": "barling-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72923"
+        ]
+    },
+    {
+        "city": "Batesville",
+        "slug": "batesville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72501"
+        ]
+    },
+    {
+        "city": "Beaver",
+        "slug": "beaver-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72631"
+        ]
+    },
+    {
+        "city": "Benton",
+        "slug": "benton-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72015",
+            "72019",
+            "72018",
+            "72158"
+        ]
+    },
+    {
+        "city": "Bentonville",
+        "slug": "bentonville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72713",
+            "72712"
+        ]
+    },
+    {
+        "city": "Berryville",
+        "slug": "berryville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72616"
+        ]
+    },
+    {
+        "city": "Bryant",
+        "slug": "bryant-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72002",
+            "72022",
+            "72089"
+        ]
+    },
+    {
+        "city": "Cabot",
+        "slug": "cabot-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72023"
+        ]
+    },
+    {
+        "city": "Caldwell",
+        "slug": "caldwell-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72335"
+        ]
+    },
+    {
+        "city": "Calion",
+        "slug": "calion-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71730"
+        ]
+    },
+    {
+        "city": "Camden",
+        "slug": "camden-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71701",
+            "71711"
+        ]
+    },
+    {
+        "city": "Cave Springs",
+        "slug": "cave-springs-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72713"
+        ]
+    },
+    {
+        "city": "Centerton",
+        "slug": "centerton-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72713",
+            "72719"
+        ]
+    },
+    {
+        "city": "Clarksville",
+        "slug": "clarksville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72830"
+        ]
+    },
+    {
+        "city": "College Station",
+        "slug": "college-station-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72053",
+            "72206"
+        ]
+    },
+    {
+        "city": "Conway",
+        "slug": "conway-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72032",
+            "72035",
+            "72034"
+        ]
+    },
+    {
+        "city": "Denning",
+        "slug": "denning-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72949"
+        ]
+    },
+    {
+        "city": "East End",
+        "slug": "east-end-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206"
+        ]
+    },
+    {
+        "city": "El Dorado",
+        "slug": "el-dorado-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71730"
+        ]
+    },
+    {
+        "city": "Elkins",
+        "slug": "elkins-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72701"
+        ]
+    },
+    {
+        "city": "Elm Springs",
+        "slug": "elm-springs-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72762"
+        ]
+    },
+    {
+        "city": "Fair Oaks",
+        "slug": "fair-oaks-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72396"
+        ]
+    },
+    {
+        "city": "Farmington",
+        "slug": "farmington-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72730"
+        ]
+    },
+    {
+        "city": "Fayetteville",
+        "slug": "fayetteville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72704",
+            "72703",
+            "72701"
+        ]
+    },
+    {
+        "city": "Forrest City",
+        "slug": "forrest-city-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72335"
+        ]
+    },
+    {
+        "city": "Fort Smith",
+        "slug": "fort-smith-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72908",
+            "72901",
+            "72904",
+            "72923",
+            "72916",
+            "72903",
+            "72906",
+            "72913",
+            "72914",
+            "72917",
+            "72918",
+            "72919"
+        ]
+    },
+    {
+        "city": "Fountain Hill",
+        "slug": "fountain-hill-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71646"
+        ]
+    },
+    {
+        "city": "Fountain Lake",
+        "slug": "fountain-lake-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71901"
+        ]
+    },
+    {
+        "city": "Gibson",
+        "slug": "gibson-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72120"
+        ]
+    },
+    {
+        "city": "Goshen",
+        "slug": "goshen-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72703"
+        ]
+    },
+    {
+        "city": "Green Forest",
+        "slug": "green-forest-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72638"
+        ]
+    },
+    {
+        "city": "Greenland",
+        "slug": "greenland-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72701"
+        ]
+    },
+    {
+        "city": "Hagarville",
+        "slug": "hagarville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72830"
+        ]
+    },
+    {
+        "city": "Hamburg",
+        "slug": "hamburg-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71646"
+        ]
+    },
+    {
+        "city": "Helena-West Helena",
+        "slug": "helena-west-helena-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72390"
+        ]
+    },
+    {
+        "city": "Highfill",
+        "slug": "highfill-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72713"
+        ]
+    },
+    {
+        "city": "Holiday Island",
+        "slug": "holiday-island-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72631"
+        ]
+    },
+    {
+        "city": "Horseshoe Lake",
+        "slug": "horseshoe-lake-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72348"
+        ]
+    },
+    {
+        "city": "Hot Springs",
+        "slug": "hot-springs-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71901",
+            "71913",
+            "71902",
+            "71914"
+        ]
+    },
+    {
+        "city": "Hughes",
+        "slug": "hughes-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72348"
+        ]
+    },
+    {
+        "city": "Huntsville",
+        "slug": "huntsville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72740"
+        ]
+    },
+    {
+        "city": "Jacksonville",
+        "slug": "jacksonville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72099",
+            "72076",
+            "72078"
+        ]
+    },
+    {
+        "city": "Johnson",
+        "slug": "johnson-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72704",
+            "72762"
+        ]
+    },
+    {
+        "city": "Jonesboro",
+        "slug": "jonesboro-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72467",
+            "72401",
+            "72404",
+            "72405",
+            "72402",
+            "72403"
+        ]
+    },
+    {
+        "city": "Kingston",
+        "slug": "kingston-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72740"
+        ]
+    },
+    {
+        "city": "LaGrange",
+        "slug": "lagrange-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72360"
+        ]
+    },
+    {
+        "city": "Lamar",
+        "slug": "lamar-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72830"
+        ]
+    },
+    {
+        "city": "Landmark",
+        "slug": "landmark-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206"
+        ]
+    },
+    {
+        "city": "Lawson",
+        "slug": "lawson-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71730"
+        ]
+    },
+    {
+        "city": "Little Flock",
+        "slug": "little-flock-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72756"
+        ]
+    },
+    {
+        "city": "Little Rock",
+        "slug": "little-rock-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206",
+            "72205"
+        ]
+    },
+    {
+        "city": "London",
+        "slug": "london-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72802"
+        ]
+    },
+    {
+        "city": "Madison",
+        "slug": "madison-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72335"
+        ]
+    },
+    {
+        "city": "Marianna",
+        "slug": "marianna-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72360"
+        ]
+    },
+    {
+        "city": "Marion",
+        "slug": "marion-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72364"
+        ]
+    },
+    {
+        "city": "McAlmont",
+        "slug": "mcalmont-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72117"
+        ]
+    },
+    {
+        "city": "Norphlet",
+        "slug": "norphlet-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71730"
+        ]
+    },
+    {
+        "city": "North Little Rock",
+        "slug": "north-little-rock-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72113",
+            "72116",
+            "72114",
+            "72118",
+            "72117",
+            "72115",
+            "72124",
+            "72190",
+            "72214"
+        ]
+    },
+    {
+        "city": "Oak Grove",
+        "slug": "oak-grove-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72802"
+        ]
+    },
+    {
+        "city": "Ozark",
+        "slug": "ozark-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72949"
+        ]
+    },
+    {
+        "city": "Ozone",
+        "slug": "ozone-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72830"
+        ]
+    },
+    {
+        "city": "Paragould",
+        "slug": "paragould-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72450",
+            "72451"
+        ]
+    },
+    {
+        "city": "Pine Bluff",
+        "slug": "pine-bluff-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71602",
+            "71601",
+            "71603",
+            "71611",
+            "71612"
+        ]
+    },
+    {
+        "city": "Pleasant Plains",
+        "slug": "pleasant-plains-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72568"
+        ]
+    },
+    {
+        "city": "Poplar Grove",
+        "slug": "poplar-grove-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72374"
+        ]
+    },
+    {
+        "city": "Pottsville",
+        "slug": "pottsville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72802"
+        ]
+    },
+    {
+        "city": "Prairie Creek",
+        "slug": "prairie-creek-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72756"
+        ]
+    },
+    {
+        "city": "Prairie Grove",
+        "slug": "prairie-grove-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72730"
+        ]
+    },
+    {
+        "city": "Rogers",
+        "slug": "rogers-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72758",
+            "72756",
+            "72716",
+            "72757"
+        ]
+    },
+    {
+        "city": "Russellville",
+        "slug": "russellville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72802",
+            "72801",
+            "72811"
+        ]
+    },
+    {
+        "city": "Searcy",
+        "slug": "searcy-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72143",
+            "72145",
+            "72149"
+        ]
+    },
+    {
+        "city": "Sherwood",
+        "slug": "sherwood-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72120",
+            "72076",
+            "72117",
+            "72216"
+        ]
+    },
+    {
+        "city": "Springdale",
+        "slug": "springdale-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72764",
+            "72762",
+            "72765",
+            "72766"
+        ]
+    },
+    {
+        "city": "Sulphur Springs",
+        "slug": "sulphur-springs-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71603"
+        ]
+    },
+    {
+        "city": "Sunset",
+        "slug": "sunset-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72364"
+        ]
+    },
+    {
+        "city": "Sweet Home",
+        "slug": "sweet-home-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206"
+        ]
+    },
+    {
+        "city": "Tontitown",
+        "slug": "tontitown-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72762"
+        ]
+    },
+    {
+        "city": "Urbana",
+        "slug": "urbana-ar",
+        "state": "AR",
+        "zip_codes": [
+            "71730"
+        ]
+    },
+    {
+        "city": "Van Buren",
+        "slug": "van-buren-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72956",
+            "72957"
+        ]
+    },
+    {
+        "city": "Vanndale",
+        "slug": "vanndale-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72396"
+        ]
+    },
+    {
+        "city": "West Memphis",
+        "slug": "west-memphis-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72301",
+            "72364",
+            "72303"
+        ]
+    },
+    {
+        "city": "Wiederkehr Village",
+        "slug": "wiederkehr-village-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72949"
+        ]
+    },
+    {
+        "city": "Woodson",
+        "slug": "woodson-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206"
+        ]
+    },
+    {
+        "city": "Wrightsville",
+        "slug": "wrightsville-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72206"
+        ]
+    },
+    {
+        "city": "Wynne",
+        "slug": "wynne-ar",
+        "state": "AR",
+        "zip_codes": [
+            "72396"
+        ]
+    }
+]

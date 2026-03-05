@@ -1,1 +1,252 @@
-[{"state":"AL","state_name":"Alabama","count":26},{"state":"AK","state_name":"Alaska","count":1},{"state":"AZ","state_name":"Arizona","count":31},{"state":"AR","state_name":"Arkansas","count":23},{"state":"CA","state_name":"California","count":150},{"state":"CO","state_name":"Colorado","count":30},{"state":"CT","state_name":"Connecticut","count":13},{"state":"DE","state_name":"Delaware","count":4},{"state":"FL","state_name":"Florida","count":121},{"state":"GA","state_name":"Georgia","count":52},{"state":"HI","state_name":"Hawaii","count":4},{"state":"ID","state_name":"Idaho","count":11},{"state":"IL","state_name":"Illinois","count":86},{"state":"IN","state_name":"Indiana","count":47},{"state":"IA","state_name":"Iowa","count":26},{"state":"KS","state_name":"Kansas","count":21},{"state":"KY","state_name":"Kentucky","count":25},{"state":"LA","state_name":"Louisiana","count":18},{"state":"ME","state_name":"Maine","count":5},{"state":"MD","state_name":"Maryland","count":36},{"state":"MA","state_name":"Massachusetts","count":20},{"state":"MI","state_name":"Michigan","count":38},{"state":"MN","state_name":"Minnesota","count":47},{"state":"MS","state_name":"Mississippi","count":15},{"state":"MO","state_name":"Missouri","count":35},{"state":"MT","state_name":"Montana","count":6},{"state":"NE","state_name":"Nebraska","count":10},{"state":"NV","state_name":"Nevada","count":4},{"state":"NH","state_name":"New Hampshire","count":4},{"state":"NJ","state_name":"New Jersey","count":34},{"state":"NM","state_name":"New Mexico","count":12},{"state":"NY","state_name":"New York","count":44},{"state":"NC","state_name":"North Carolina","count":54},{"state":"ND","state_name":"North Dakota","count":7},{"state":"OH","state_name":"Ohio","count":84},{"state":"OK","state_name":"Oklahoma","count":22},{"state":"OR","state_name":"Oregon","count":19},{"state":"PA","state_name":"Pennsylvania","count":36},{"state":"PR","state_name":"Puerto Rico","count":6},{"state":"RI","state_name":"Rhode Island","count":4},{"state":"SC","state_name":"South Carolina","count":36},{"state":"SD","state_name":"South Dakota","count":6},{"state":"TN","state_name":"Tennessee","count":35},{"state":"TX","state_name":"Texas","count":142},{"state":"UT","state_name":"Utah","count":31},{"state":"VT","state_name":"Vermont","count":2},{"state":"VA","state_name":"Virginia","count":37},{"state":"WA","state_name":"Washington","count":47},{"state":"WV","state_name":"West Virginia","count":6},{"state":"WI","state_name":"Wisconsin","count":30},{"state":"WY","state_name":"Wyoming","count":5}]
+[
+    {
+        "state": "AK",
+        "state_name": "Alaska",
+        "count": 2
+    },
+    {
+        "state": "AL",
+        "state_name": "Alabama",
+        "count": 214
+    },
+    {
+        "state": "AR",
+        "state_name": "Arkansas",
+        "count": 88
+    },
+    {
+        "state": "AZ",
+        "state_name": "Arizona",
+        "count": 119
+    },
+    {
+        "state": "CA",
+        "state_name": "California",
+        "count": 804
+    },
+    {
+        "state": "CO",
+        "state_name": "Colorado",
+        "count": 229
+    },
+    {
+        "state": "CT",
+        "state_name": "Connecticut",
+        "count": 42
+    },
+    {
+        "state": "DE",
+        "state_name": "Delaware",
+        "count": 23
+    },
+    {
+        "state": "FL",
+        "state_name": "Florida",
+        "count": 545
+    },
+    {
+        "state": "GA",
+        "state_name": "Georgia",
+        "count": 214
+    },
+    {
+        "state": "HI",
+        "state_name": "Hawaii",
+        "count": 20
+    },
+    {
+        "state": "IA",
+        "state_name": "Iowa",
+        "count": 50
+    },
+    {
+        "state": "ID",
+        "state_name": "Idaho",
+        "count": 30
+    },
+    {
+        "state": "IL",
+        "state_name": "Illinois",
+        "count": 194
+    },
+    {
+        "state": "IN",
+        "state_name": "Indiana",
+        "count": 129
+    },
+    {
+        "state": "KS",
+        "state_name": "Kansas",
+        "count": 48
+    },
+    {
+        "state": "KY",
+        "state_name": "Kentucky",
+        "count": 150
+    },
+    {
+        "state": "LA",
+        "state_name": "Louisiana",
+        "count": 103
+    },
+    {
+        "state": "MA",
+        "state_name": "Massachusetts",
+        "count": 40
+    },
+    {
+        "state": "MD",
+        "state_name": "Maryland",
+        "count": 215
+    },
+    {
+        "state": "ME",
+        "state_name": "Maine",
+        "count": 5
+    },
+    {
+        "state": "MI",
+        "state_name": "Michigan",
+        "count": 159
+    },
+    {
+        "state": "MN",
+        "state_name": "Minnesota",
+        "count": 86
+    },
+    {
+        "state": "MO",
+        "state_name": "Missouri",
+        "count": 137
+    },
+    {
+        "state": "MS",
+        "state_name": "Mississippi",
+        "count": 51
+    },
+    {
+        "state": "MT",
+        "state_name": "Montana",
+        "count": 21
+    },
+    {
+        "state": "NC",
+        "state_name": "North Carolina",
+        "count": 183
+    },
+    {
+        "state": "ND",
+        "state_name": "North Dakota",
+        "count": 15
+    },
+    {
+        "state": "NE",
+        "state_name": "Nebraska",
+        "count": 17
+    },
+    {
+        "state": "NH",
+        "state_name": "New Hampshire",
+        "count": 10
+    },
+    {
+        "state": "NJ",
+        "state_name": "New Jersey",
+        "count": 144
+    },
+    {
+        "state": "NM",
+        "state_name": "New Mexico",
+        "count": 119
+    },
+    {
+        "state": "NV",
+        "state_name": "Nevada",
+        "count": 27
+    },
+    {
+        "state": "NY",
+        "state_name": "New York",
+        "count": 124
+    },
+    {
+        "state": "OH",
+        "state_name": "Ohio",
+        "count": 206
+    },
+    {
+        "state": "OK",
+        "state_name": "Oklahoma",
+        "count": 76
+    },
+    {
+        "state": "OR",
+        "state_name": "Oregon",
+        "count": 77
+    },
+    {
+        "state": "PA",
+        "state_name": "Pennsylvania",
+        "count": 450
+    },
+    {
+        "state": "RI",
+        "state_name": "Rhode Island",
+        "count": 4
+    },
+    {
+        "state": "SC",
+        "state_name": "South Carolina",
+        "count": 224
+    },
+    {
+        "state": "SD",
+        "state_name": "South Dakota",
+        "count": 11
+    },
+    {
+        "state": "TN",
+        "state_name": "Tennessee",
+        "count": 150
+    },
+    {
+        "state": "TX",
+        "state_name": "Texas",
+        "count": 506
+    },
+    {
+        "state": "UT",
+        "state_name": "Utah",
+        "count": 53
+    },
+    {
+        "state": "VA",
+        "state_name": "Virginia",
+        "count": 216
+    },
+    {
+        "state": "VT",
+        "state_name": "Vermont",
+        "count": 5
+    },
+    {
+        "state": "WA",
+        "state_name": "Washington",
+        "count": 186
+    },
+    {
+        "state": "WI",
+        "state_name": "Wisconsin",
+        "count": 71
+    },
+    {
+        "state": "WV",
+        "state_name": "West Virginia",
+        "count": 24
+    },
+    {
+        "state": "WY",
+        "state_name": "Wyoming",
+        "count": 11
+    }
+]
